@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton } from '@clerk/nextjs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import ThemeToggle from '@/components/ThemeToggle';
@@ -20,10 +21,19 @@ export default function Navigation() {
 				</div>
 			</div>
 			<div className='flex items-center space-x-1'>
-				<Button className='cursor-pointer'>Register</Button>
-				<Button className='cursor-pointer' variant='link'>
-					Sign in
-				</Button>
+				<SignedOut>
+					<SignInButton>
+						<Button className='cursor-pointer'>Sign in</Button>
+					</SignInButton>
+					<SignUpButton>
+						<Button className='cursor-pointer' variant='link'>
+							Register
+						</Button>
+					</SignUpButton>
+				</SignedOut>
+				<SignedIn>
+					<UserButton />
+				</SignedIn>
 			</div>
 		</nav>
 	);
