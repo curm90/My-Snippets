@@ -1,9 +1,12 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import ThemeToggle from '@/components/ThemeToggle';
 
 export default function Navigation() {
 	return (
-		<nav className='flex items-center justify-between py-4 px-8 bg-gray-800 text-white'>
+		<nav className='flex items-center justify-between py-4 px-8 bg-secondary'>
 			<div className='flex items-center space-x-6'>
 				<Link href='/'>
 					<Image src='/logo.png' alt='code tags' width={30} height={30} className='rounded-full' />
@@ -11,17 +14,16 @@ export default function Navigation() {
 				<Link href='/'>Dashboard</Link>
 			</div>
 			<div className='flex items-center space-x-4 flex-1 justify-end px-6'>
+				<ThemeToggle />
 				<div className='max-w-sm w-full'>
-					<input
-						className='border border-slate-200 rounded-md px-3 py-1 outline-none bg-[#465263] w-full placeholder:text-sm focus:bg-slate-200 focus:text-slate-950'
-						type='search'
-						placeholder='Search snippets'
-					/>
+					<Input className='' type='search' placeholder='Search snippets' />
 				</div>
 			</div>
-			<div className='flex items-center space-x-6'>
-				<button>Register</button>
-				<button>Sign in</button>
+			<div className='flex items-center space-x-1'>
+				<Button className='cursor-pointer'>Register</Button>
+				<Button className='cursor-pointer' variant='link'>
+					Sign in
+				</Button>
 			</div>
 		</nav>
 	);
