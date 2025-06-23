@@ -6,7 +6,7 @@ import ThemeToggle from '@/components/Theme/ThemeToggle';
 
 export default function Navigation() {
 	return (
-		<nav className='flex items-center justify-between py-4 px-8 bg-secondary'>
+		<nav className='fixed top-0 left-0 z-50 flex items-center justify-between py-4 px-8 bg-secondary w-full h-[var(--navbar-height)]'>
 			<div className='flex items-center space-x-6'>
 				<Link href='/'>
 					<Image src='/logo.png' alt='code tags' width={30} height={30} className='rounded-full' />
@@ -20,7 +20,9 @@ export default function Navigation() {
 				</div>
 			</div>
 			<div className='flex items-center space-x-1'>
-				<Button className='cursor-pointer'>Register</Button>
+				<Button className='cursor-pointer bg-action hover:bg-action/85 text-foreground'>
+					Register
+				</Button>
 				<Button className='cursor-pointer' variant='link'>
 					Sign in
 				</Button>
