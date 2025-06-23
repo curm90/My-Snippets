@@ -32,8 +32,6 @@ export default function CreateSnippetForm() {
 		console.log(values);
 	}
 
-	console.log({ langs, langNames });
-
 	return (
 		<Form {...form}>
 			<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
