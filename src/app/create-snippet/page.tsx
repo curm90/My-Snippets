@@ -1,3 +1,5 @@
+import CreateSnippetForm from '@/components/CreateSnippetForm/CreateSnippetForm';
+
 export default function Page() {
 	return (
 		<div className='py-6 px-8'>
@@ -6,6 +8,9 @@ export default function Page() {
 				This information will be visible to others—please avoid sharing sensitive or private
 				details.
 			</p>
+			<div className='mt-8'>
+				<CreateSnippetForm />
+			</div>
 		</div>
 	);
 }
