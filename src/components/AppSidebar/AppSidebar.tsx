@@ -2,19 +2,10 @@ import Link from 'next/link';
 import {
 	Sidebar,
 	SidebarContent,
-	SidebarGroup,
 	SidebarMenu,
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from '@/components/ui/sidebar';
-
-const items = [
-	{
-		id: 1,
-		title: 'Create Snippet',
-		url: '#',
-	},
-];
 
 export default function AppSidebar() {
 	return (
