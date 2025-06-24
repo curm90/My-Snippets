@@ -1,6 +1,6 @@
 import prisma from '@/lib/prisma';
 
-export default async function Page({ params }: { params: { snippetId: string } }) {
+export default async function Page({ params }: { params: Promise<{ snippetId: string }> }) {
 	const { snippetId } = await params;
 	const snippet = await prisma.snippet.findUnique({
 		where: { id: snippetId },
