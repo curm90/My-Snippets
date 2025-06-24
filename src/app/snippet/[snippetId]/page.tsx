@@ -1,3 +1,4 @@
+import SnippetCard from '@/components/SnippetCard/SnippetCard';
 import prisma from '@/lib/prisma';
 
 export default async function Page({ params }: { params: Promise<{ snippetId: string }> }) {
@@ -10,13 +11,13 @@ export default async function Page({ params }: { params: Promise<{ snippetId: st
 		return <div className='text-red-500'>Snippet not found</div>;
 	}
 
-	const { id } = snippet || {};
+	const { title, language, content } = snippet || {};
 
 	console.log({ snippetId, snippet });
 
 	return (
 		<section className='py-4 px-6'>
-			<div>{id}</div>
+			<SnippetCard title={title} language={language} content={content} showFullContent />
 		</section>
 	);
 }
