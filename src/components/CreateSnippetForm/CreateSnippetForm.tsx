@@ -4,19 +4,15 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import CodeMirror from '@uiw/react-codemirror';
 import { nord } from '@uiw/codemirror-theme-nord';
-import { langs, loadLanguage, langNames } from '@uiw/codemirror-extensions-langs';
+import { loadLanguage, langNames } from '@uiw/codemirror-extensions-langs';
 import { z } from 'zod';
 
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import LanguageSelect from '@/components/LanguageSelect/LanguageSelect';
-
-const formSchema = z.object({
-	title: z.string().min(2).max(50),
-	language: z.enum(Object.keys(langs) as [keyof typeof langs, ...Array<keyof typeof langs>]), // Assert as a tuple
-	snippet: z.string().min(1, 'Snippet is required'),
-});
+import { formSchema } from '@/lib/schemas';
+import createSnippet from '@/actions/create-snippet';
 
 export default function CreateSnippetForm() {
 	const form = useForm<z.infer<typeof formSchema>>({
@@ -28,13 +24,15 @@ export default function CreateSnippetForm() {
 		},
 	});
 
-	function onSubmit(values: z.infer<typeof formSchema>) {
-		console.log(values);
-	}
-
 	return (
 		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
+			<form
+				action={async (data) => {
+					console.log('FormData:', Object.fromEntries(data.entries())); // Log all form data
+					await createSnippet(data);
+				}}
+				className='space-y-8'
+			>
 				<div className='grid grid-cols-2 gap-4'>
 					<FormField
 						control={form.control}
@@ -56,7 +54,7 @@ export default function CreateSnippetForm() {
 							<FormItem>
 								<FormLabel className='font-semibold'>Language</FormLabel>
 								<FormControl>
-									<LanguageSelect {...field} options={langNames} />
+									<LanguageSelect onChange={field.onChange} value={field.value} options={langNames} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -76,6 +74,12 @@ export default function CreateSnippetForm() {
 								<FormControl>
 									<div className='border border-input bg-transparent rounded-md overflow-hidden py-1 min-h-24'>
 										<CodeMirror extensions={[languageExtension]} theme={nord} {...field} />
+										<textarea
+											name='snippet'
+											value={field.value || ''}
+											onChange={(e) => field.onChange(e.target.value)} // Sync changes back to react-hook-form
+											className='hidden'
+										/>
 									</div>
 								</FormControl>
 								<FormMessage />

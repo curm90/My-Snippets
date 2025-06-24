@@ -12,7 +12,7 @@ export default function LanguageSelect({
 	const sortedOptions = options?.sort((a, b) => a.localeCompare(b));
 
 	return (
-		<Select onValueChange={onChange} value={value} defaultValue={value}>
+		<Select name='language' onValueChange={onChange} value={value} defaultValue={value}>
 			<SelectTrigger className='w-full'>
 				<SelectValue placeholder='Select Language' />
 			</SelectTrigger>
