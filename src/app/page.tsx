@@ -2,7 +2,7 @@ import Link from 'next/link';
 import prisma from '@/lib/prisma';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import { Card, CardAction, CardContent, CardHeader } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import SnippetActionButtons from '@/components/SnippetActionButtons/SnippetActionButtons';
 
 export default async function Home() {
