@@ -3,6 +3,7 @@
 import { redirect } from 'next/navigation';
 import { useState } from 'react';
 import { Clipboard, SquarePen, Trash2, Check, X } from 'lucide-react';
+import { toast } from 'sonner';
 import { deleteSnippet } from '@/data-access/snippets';
 import { Button } from '@/components/ui/button';
 import { CopyButton } from '@/components/CopyToClipboardButton/CopyToClipboardButton';
@@ -15,13 +16,14 @@ export default function SnippetActionButtons({ snippetId, content }: { snippetId
 			await deleteSnippet(snippetId);
 
 			console.log('Snippet deleted successfully');
-			// // Optionally add a toast notification here
+			toast.success('Snippet deleted successfully');
 		} catch (error) {
 			console.error('Failed to delete snippet:', error);
-			// Optionally show error message
+			toast.error('Failed to delete snippet');
 		} finally {
 			setConfirmingDelete(false);
 		}
+		redirect('/');
 	};
 
 	const buttons = [
