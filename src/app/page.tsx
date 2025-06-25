@@ -5,8 +5,6 @@ import SnippetCard from '@/components/SnippetCard/SnippetCard';
 export default async function Home() {
 	const snippets = await prisma.snippet.findMany();
 
-	console.log({ snippets });
-
 	return (
 		<section className='py-4 px-6'>
 			<h1 className='text-3xl'>Welcome Liam!</h1>

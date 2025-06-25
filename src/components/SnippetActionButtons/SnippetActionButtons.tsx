@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useRouter, redirect } from 'next/navigation';
 import { useState } from 'react';
 import { Clipboard, SquarePen, Trash2, Check, X } from 'lucide-react';
 import { deleteSnippet } from '@/data-access/snippets';
@@ -41,6 +41,7 @@ export default function SnippetActionButtons({ snippetId, content }: { snippetId
 			label: 'Edit',
 			action: () => {
 				console.log('Edit action triggered');
+				redirect(`/edit-snippet/${snippetId}`);
 			},
 		},
 		...(confirmingDelete
