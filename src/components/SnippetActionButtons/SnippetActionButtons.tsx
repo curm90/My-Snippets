@@ -1,27 +1,31 @@
 'use client';
 
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Clipboard, SquarePen, Trash2, Check, X } from 'lucide-react';
+import { toast } from 'sonner';
 import { deleteSnippet } from '@/data-access/snippets';
 import { Button } from '@/components/ui/button';
 import { CopyButton } from '@/components/CopyToClipboardButton/CopyToClipboardButton';
+import { toastMessages } from '@/constants/toastMessages';
 
 export default function SnippetActionButtons({ snippetId, content }: { snippetId: string; content: string }) {
 	const [confirmingDelete, setConfirmingDelete] = useState(false);
+	const router = useRouter();
 
 	const handleDelete = async () => {
 		try {
 			await deleteSnippet(snippetId);
 
 			console.log('Snippet deleted successfully');
-			// // Optionally add a toast notification here
+			toast.success(toastMessages.deleteSnippet.success);
 		} catch (error) {
 			console.error('Failed to delete snippet:', error);
-			// Optionally show error message
+			toast.error(toastMessages.deleteSnippet.error);
 		} finally {
 			setConfirmingDelete(false);
 		}
+		router.push('/');
 	};
 
 	const buttons = [
@@ -39,7 +43,7 @@ export default function SnippetActionButtons({ snippetId, content }: { snippetId
 			label: 'Edit',
 			action: () => {
 				console.log('Edit action triggered');
-				redirect(`/edit-snippet/${snippetId}`);
+				router.push(`/edit-snippet/${snippetId}`);
 			},
 		},
 		...(confirmingDelete

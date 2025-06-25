@@ -26,6 +26,7 @@ export default async function Page({ params }: { params: Promise<{ snippetId: st
 				<SnippetForm
 					snippetId={snippetId}
 					action={editSnippet}
+					actionId='editSnippet'
 					defaultValues={{
 						title: snippet.title,
 						language: snippet.language,

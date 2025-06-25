@@ -2,14 +2,11 @@
 
 import prisma from '@/lib/prisma';
 import { formSchema } from '@/lib/schemas';
-import { redirect } from 'next/navigation';
 
-export async function createSnippet(data: unknown) {
+export async function createSnippet(data: unknown): Promise<{ id: string }> {
 	if (!(data instanceof FormData)) {
 		throw new Error('Invalid data format. Expected FormData.');
 	}
-
-	let snippetId: string | null = null;
 
 	try {
 		// Validate the data
@@ -24,6 +21,7 @@ export async function createSnippet(data: unknown) {
 
 		// Extract validated data
 		const snippetData = validatedData.data;
+		console.log({ snippetData });
 
 		const { title, language, snippet } = snippetData;
 
@@ -36,17 +34,14 @@ export async function createSnippet(data: unknown) {
 			},
 		});
 
-		snippetId = createdSnippet.id;
-
-		// Return the created snippet
 		console.log({ createdSnippet });
+		// Return the created snippet
+		return { id: createdSnippet.id };
 	} catch (error) {
 		// Log unexpected errors
 		console.error('Unexpected error:', error);
 		throw new Error('An unexpected error occurred while creating the snippet.');
 	}
-
-	redirect(`/snippet/${snippetId}`);
 }
 
 export async function deleteSnippet(snippetId: string) {
@@ -62,16 +57,15 @@ export async function deleteSnippet(snippetId: string) {
 
 		// Return the deleted snippet
 		console.log({ deletedSnippet });
+		return { id: deletedSnippet.id };
 	} catch (error) {
 		// Log unexpected errors
 		console.error('Unexpected error:', error);
 		throw new Error('An unexpected error occurred while deleting the snippet.');
 	}
-
-	redirect('/');
 }
 
-export async function editSnippet(data: unknown, snippetId?: string) {
+export async function editSnippet(data: unknown, snippetId?: string): Promise<{ id: string }> {
 	if (!snippetId) {
 		throw new Error('Snippet ID is required');
 	}
@@ -107,11 +101,10 @@ export async function editSnippet(data: unknown, snippetId?: string) {
 		}
 
 		console.log('Snippet updated successfully:', updatedSnippet);
+		return { id: updatedSnippet.id };
 	} catch (error) {
 		// Log unexpected errors
 		console.error('Unexpected error:', error);
 		throw new Error('An unexpected error occurred while editing the snippet.');
 	}
-
-	redirect('/');
 }
