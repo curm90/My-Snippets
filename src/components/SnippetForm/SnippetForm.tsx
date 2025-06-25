@@ -11,22 +11,35 @@ import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import LanguageSelect from '@/components/LanguageSelect/LanguageSelect';
-import { formSchema } from '@/lib/schemas';
-import { createSnippet } from '@/data-access/snippets';
+import { FormDataType, formSchema } from '@/lib/schemas';
+// import { createSnippet } from '@/data-access/snippets';
 
-export default function CreateSnippetForm() {
+export default function SnippetForm({
+	action,
+	defaultValues,
+	snippetId,
+}: {
+	action: (data: unknown, snippetId?: string) => Promise<void>;
+	defaultValues?: Partial<FormDataType>;
+	snippetId?: string; // Optional for edit mode
+}) {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			title: '',
-			language: undefined,
+			language: '',
 			snippet: '',
+			...defaultValues,
 		},
 	});
 
+	async function handleSubmit(data: FormDataType) {
+		await action(data, snippetId);
+	}
+
 	return (
 		<Form {...form}>
-			<form action={createSnippet} className='space-y-8'>
+			<form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-8'>
 				<div className='grid grid-cols-2 gap-4'>
 					<FormField
 						control={form.control}
@@ -60,7 +73,7 @@ export default function CreateSnippetForm() {
 					name='snippet'
 					render={({ field }) => {
 						const selectedLang = form.getValues('language');
-						const languageExtension = loadLanguage(selectedLang) || [];
+						const languageExtension = loadLanguage(selectedLang as Parameters<typeof loadLanguage>[0]) || [];
 
 						return (
 							<FormItem>
