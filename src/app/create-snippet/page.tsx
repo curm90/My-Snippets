@@ -1,4 +1,5 @@
-import CreateSnippetForm from '@/components/CreateSnippetForm/CreateSnippetForm';
+import SnippetForm from '@/components/SnippetForm/SnippetForm';
+import { createSnippet } from '@/data-access/snippets';
 
 export default function Page() {
 	return (
@@ -8,7 +9,7 @@ export default function Page() {
 				This information will be visible to others—please avoid sharing sensitive or private details.
 			</p>
 			<div className='mt-8'>
-				<CreateSnippetForm />
+				<SnippetForm action={createSnippet} />
 			</div>
 		</div>
 	);

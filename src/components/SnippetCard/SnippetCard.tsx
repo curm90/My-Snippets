@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import SnippetActionButtons from '@/components/SnippetActionButtons/SnippetActionButtons';
 
 type SnippetCardProps = {
+	id: string;
 	title: string;
 	language: string;
 	content: string;
@@ -12,6 +13,7 @@ type SnippetCardProps = {
 };
 
 export default function SnippetCard({
+	id,
 	title,
 	language,
 	content,
@@ -28,8 +30,8 @@ export default function SnippetCard({
 							<span className='bg-opacity-20'>{language.charAt(0).toUpperCase() + language.slice(1)}</span>
 						</div>
 					</div>
-					<div className='flex gap-2'>
-						<SnippetActionButtons />
+					<div className='flex gap-2 pointer-events-auto'>
+						<SnippetActionButtons snippetId={id} content={content} />
 					</div>
 				</div>
 			</CardHeader>
