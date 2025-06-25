@@ -34,7 +34,12 @@ export default function SnippetForm({
 	});
 
 	async function handleSubmit(data: FormDataType) {
-		await action(data, snippetId);
+		const formData = new FormData();
+		formData.append('title', data.title);
+		formData.append('language', data.language);
+		formData.append('snippet', data.snippet);
+
+		await action(formData, snippetId);
 	}
 
 	return (
