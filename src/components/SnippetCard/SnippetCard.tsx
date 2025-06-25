@@ -31,7 +31,7 @@ export default function SnippetCard({
 						</div>
 					</div>
 					<div className='flex gap-2 pointer-events-auto'>
-						<SnippetActionButtons snippetId={id} />
+						<SnippetActionButtons snippetId={id} content={content} />
 					</div>
 				</div>
 			</CardHeader>

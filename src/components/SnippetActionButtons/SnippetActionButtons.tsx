@@ -1,12 +1,13 @@
 'use client';
 
-import { Clipboard, SquarePen, Trash2, Check, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { useState } from 'react';
-import { deleteSnippet } from '@/data-access/snippets';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { Clipboard, SquarePen, Trash2, Check, X } from 'lucide-react';
+import { deleteSnippet } from '@/data-access/snippets';
+import { Button } from '@/components/ui/button';
+import { CopyButton } from '@/components/CopyToClipboardButton/CopyToClipboardButton';
 
-export default function SnippetActionButtons({ snippetId }: { snippetId: string }) {
+export default function SnippetActionButtons({ snippetId, content }: { snippetId: string; content: string }) {
 	const [confirmingDelete, setConfirmingDelete] = useState(false);
 	const router = useRouter();
 
@@ -72,22 +73,26 @@ export default function SnippetActionButtons({ snippetId }: { snippetId: string 
 
 	return (
 		<div className='flex gap-2'>
-			{buttons.map(({ id, icon: Icon, label, action, variant = 'outline' }) => (
-				<Button
-					key={id}
-					variant={variant}
-					size='icon'
-					className='cursor-pointer z-20'
-					onClick={(e) => {
-						e.preventDefault();
-						e.stopPropagation();
-						action();
-					}}
-					title={label}
-				>
-					<Icon className='h-4 w-4' />
-				</Button>
-			))}
+			{buttons.map(({ id, icon: Icon, label, action, variant = 'outline' }) =>
+				id === 'copy' ? (
+					<CopyButton key={id} text={content} />
+				) : (
+					<Button
+						key={id}
+						variant={variant}
+						size='icon'
+						className='cursor-pointer z-20'
+						onClick={(e) => {
+							e.preventDefault();
+							e.stopPropagation();
+							action();
+						}}
+						title={label}
+					>
+						<Icon className='h-4 w-4' />
+					</Button>
+				),
+			)}
 		</div>
 	);
 }
