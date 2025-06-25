@@ -61,12 +61,14 @@ export async function deleteSnippet(snippetId: string) {
 		});
 
 		// Return the deleted snippet
-		return deletedSnippet;
+		console.log({ deletedSnippet });
 	} catch (error) {
 		// Log unexpected errors
 		console.error('Unexpected error:', error);
 		throw new Error('An unexpected error occurred while deleting the snippet.');
 	}
+
+	redirect('/');
 }
 
 export async function editSnippet(data: unknown, snippetId?: string) {
@@ -110,4 +112,6 @@ export async function editSnippet(data: unknown, snippetId?: string) {
 		console.error('Unexpected error:', error);
 		throw new Error('An unexpected error occurred while editing the snippet.');
 	}
+
+	redirect('/');
 }

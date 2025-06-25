@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter, redirect } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import { useState } from 'react';
 import { Clipboard, SquarePen, Trash2, Check, X } from 'lucide-react';
 import { deleteSnippet } from '@/data-access/snippets';
@@ -9,15 +9,13 @@ import { CopyButton } from '@/components/CopyToClipboardButton/CopyToClipboardBu
 
 export default function SnippetActionButtons({ snippetId, content }: { snippetId: string; content: string }) {
 	const [confirmingDelete, setConfirmingDelete] = useState(false);
-	const router = useRouter();
 
 	const handleDelete = async () => {
 		try {
 			await deleteSnippet(snippetId);
 
 			console.log('Snippet deleted successfully');
-			router.refresh(); // Refresh the page to reflect the deletion
-			// Optionally add a toast notification here
+			// // Optionally add a toast notification here
 		} catch (error) {
 			console.error('Failed to delete snippet:', error);
 			// Optionally show error message
