@@ -3,7 +3,7 @@
 import prisma from '@/lib/prisma';
 import { formSchema } from '@/lib/schemas';
 
-export async function createSnippet(data: unknown) {
+export async function createSnippet(data: unknown): Promise<{ id: string }> {
 	if (!(data instanceof FormData)) {
 		throw new Error('Invalid data format. Expected FormData.');
 	}
@@ -21,6 +21,7 @@ export async function createSnippet(data: unknown) {
 
 		// Extract validated data
 		const snippetData = validatedData.data;
+		console.log({ snippetData });
 
 		const { title, language, snippet } = snippetData;
 
@@ -33,8 +34,9 @@ export async function createSnippet(data: unknown) {
 			},
 		});
 
-		// Return the created snippet
 		console.log({ createdSnippet });
+		// Return the created snippet
+		return { id: createdSnippet.id };
 	} catch (error) {
 		// Log unexpected errors
 		console.error('Unexpected error:', error);
@@ -55,6 +57,7 @@ export async function deleteSnippet(snippetId: string) {
 
 		// Return the deleted snippet
 		console.log({ deletedSnippet });
+		return { id: deletedSnippet.id };
 	} catch (error) {
 		// Log unexpected errors
 		console.error('Unexpected error:', error);
@@ -62,7 +65,7 @@ export async function deleteSnippet(snippetId: string) {
 	}
 }
 
-export async function editSnippet(data: unknown, snippetId?: string) {
+export async function editSnippet(data: unknown, snippetId?: string): Promise<{ id: string }> {
 	if (!snippetId) {
 		throw new Error('Snippet ID is required');
 	}
@@ -98,6 +101,7 @@ export async function editSnippet(data: unknown, snippetId?: string) {
 		}
 
 		console.log('Snippet updated successfully:', updatedSnippet);
+		return { id: updatedSnippet.id };
 	} catch (error) {
 		// Log unexpected errors
 		console.error('Unexpected error:', error);
