@@ -15,7 +15,6 @@ export async function createSnippet(data: unknown) {
 		// Validate the data
 		const formData = Object.fromEntries(data.entries());
 		const validatedData = formSchema.safeParse(formData);
-		console.log({ data, formData, validatedData });
 
 		if (!validatedData.success) {
 			const errors = validatedData.error.flatten();
@@ -25,7 +24,6 @@ export async function createSnippet(data: unknown) {
 
 		// Extract validated data
 		const snippetData = validatedData.data;
-		console.log({ snippetData });
 
 		const { title, language, snippet } = snippetData;
 
@@ -68,5 +66,48 @@ export async function deleteSnippet(snippetId: string) {
 		// Log unexpected errors
 		console.error('Unexpected error:', error);
 		throw new Error('An unexpected error occurred while deleting the snippet.');
+	}
+}
+
+export async function editSnippet(data: unknown, snippetId?: string) {
+	if (!snippetId) {
+		throw new Error('Snippet ID is required');
+	}
+
+	const formData = data instanceof FormData ? Object.fromEntries(data.entries()) : data;
+
+	// Validate the data
+	const validatedData = formSchema.safeParse(formData);
+
+	if (!validatedData.success) {
+		const errors = validatedData.error.flatten();
+		console.error('Validation failed:', errors);
+		throw new Error('Validation failed: ' + JSON.stringify(errors.fieldErrors));
+	}
+
+	// Extract validated data
+	const snippetData = validatedData.data;
+
+	const { title, language, snippet } = snippetData;
+
+	try {
+		const updatedSnippet = await prisma.snippet.update({
+			where: { id: snippetId },
+			data: {
+				title,
+				language,
+				content: snippet,
+			},
+		});
+
+		if (!updatedSnippet) {
+			throw new Error('Snippet not found or update failed');
+		}
+
+		console.log('Snippet updated successfully:', updatedSnippet);
+	} catch (error) {
+		// Log unexpected errors
+		console.error('Unexpected error:', error);
+		throw new Error('An unexpected error occurred while editing the snippet.');
 	}
 }
