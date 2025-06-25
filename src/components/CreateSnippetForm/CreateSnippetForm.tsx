@@ -12,7 +12,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import LanguageSelect from '@/components/LanguageSelect/LanguageSelect';
 import { formSchema } from '@/lib/schemas';
-import createSnippet from '@/actions/create-snippet';
+import { createSnippet } from '@/data-access/snippets';
 
 export default function CreateSnippetForm() {
 	const form = useForm<z.infer<typeof formSchema>>({
@@ -26,13 +26,7 @@ export default function CreateSnippetForm() {
 
 	return (
 		<Form {...form}>
-			<form
-				action={async (data) => {
-					console.log('FormData:', Object.fromEntries(data.entries())); // Log all form data
-					await createSnippet(data);
-				}}
-				className='space-y-8'
-			>
+			<form action={createSnippet} className='space-y-8'>
 				<div className='grid grid-cols-2 gap-4'>
 					<FormField
 						control={form.control}
