@@ -2,14 +2,11 @@
 
 import prisma from '@/lib/prisma';
 import { formSchema } from '@/lib/schemas';
-import { redirect } from 'next/navigation';
 
 export async function createSnippet(data: unknown) {
 	if (!(data instanceof FormData)) {
 		throw new Error('Invalid data format. Expected FormData.');
 	}
-
-	let snippetId: string | null = null;
 
 	try {
 		// Validate the data
@@ -36,8 +33,6 @@ export async function createSnippet(data: unknown) {
 			},
 		});
 
-		snippetId = createdSnippet.id;
-
 		// Return the created snippet
 		console.log({ createdSnippet });
 	} catch (error) {
@@ -45,8 +40,6 @@ export async function createSnippet(data: unknown) {
 		console.error('Unexpected error:', error);
 		throw new Error('An unexpected error occurred while creating the snippet.');
 	}
-
-	redirect(`/snippet/${snippetId}`);
 }
 
 export async function deleteSnippet(snippetId: string) {
@@ -67,8 +60,6 @@ export async function deleteSnippet(snippetId: string) {
 		console.error('Unexpected error:', error);
 		throw new Error('An unexpected error occurred while deleting the snippet.');
 	}
-
-	redirect('/');
 }
 
 export async function editSnippet(data: unknown, snippetId?: string) {
@@ -112,6 +103,4 @@ export async function editSnippet(data: unknown, snippetId?: string) {
 		console.error('Unexpected error:', error);
 		throw new Error('An unexpected error occurred while editing the snippet.');
 	}
-
-	redirect('/');
 }
