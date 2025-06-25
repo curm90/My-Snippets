@@ -1,9 +1,8 @@
 import { z } from 'zod';
-import { langs } from '@uiw/codemirror-extensions-langs';
 
 export const formSchema = z.object({
 	title: z.string().min(2).max(50),
-	language: z.enum(Object.keys(langs) as [keyof typeof langs, ...Array<keyof typeof langs>]), // Assert as a tuple
+	language: z.string().min(1, 'Language is required'),
 	snippet: z.string().min(1, 'Snippet is required'),
 });
 
