@@ -1,10 +1,12 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import CodeMirror from '@uiw/react-codemirror';
 import { nord } from '@uiw/codemirror-theme-nord';
 import { loadLanguage, langNames } from '@uiw/codemirror-extensions-langs';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { Button } from '@/components/ui/button';
@@ -12,17 +14,22 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import LanguageSelect from '@/components/LanguageSelect/LanguageSelect';
 import { FormDataType, formSchema } from '@/lib/schemas';
-// import { createSnippet } from '@/data-access/snippets';
+import { toastMessages } from '@/constants/toastMessages';
+
+type ToastActionId = keyof typeof toastMessages;
 
 export default function SnippetForm({
 	action,
+	actionId,
 	defaultValues,
 	snippetId,
 }: {
-	action: (data: unknown, snippetId?: string) => Promise<void>;
+	action: (data: unknown, snippetId?: string) => Promise<{ id: string } | void>;
+	actionId?: ToastActionId;
 	defaultValues?: Partial<FormDataType>;
 	snippetId?: string; // Optional for edit mode
 }) {
+	const router = useRouter();
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -34,12 +41,26 @@ export default function SnippetForm({
 	});
 
 	async function handleSubmit(data: FormDataType) {
-		const formData = new FormData();
-		formData.append('title', data.title);
-		formData.append('language', data.language);
-		formData.append('snippet', data.snippet);
+		try {
+			const formData = new FormData();
+			formData.append('title', data.title);
+			formData.append('language', data.language);
+			formData.append('snippet', data.snippet);
 
-		await action(formData, snippetId);
+			await action(formData, snippetId);
+
+			if (actionId && toastMessages[actionId]) {
+				toast.success(toastMessages[actionId].success);
+			}
+
+			router.push('/');
+		} catch (error) {
+			console.error(error);
+			if (actionId && toastMessages[actionId]) {
+				toast.error(toastMessages[actionId].error);
+			}
+			console.error(error);
+		}
 	}
 
 	return (
