@@ -3,29 +3,25 @@
 import prisma from '@/lib/prisma';
 import { formSchema } from '@/lib/schemas';
 
-export async function createSnippet(data: unknown): Promise<{ id: string }> {
+export async function createSnippet(prevState: ActionState | null, data: unknown): Promise<ActionState> {
 	if (!(data instanceof FormData)) {
 		throw new Error('Invalid data format. Expected FormData.');
 	}
 
 	try {
-		// Validate the data
 		const formData = Object.fromEntries(data.entries());
 		const validatedData = formSchema.safeParse(formData);
 
 		if (!validatedData.success) {
-			const errors = validatedData.error.flatten();
-			console.error('Validation failed:', errors);
-			throw new Error('Validation failed: ' + JSON.stringify(errors.fieldErrors));
+			return {
+				errors: validatedData.error.flatten().fieldErrors,
+				success: false,
+			};
 		}
 
-		// Extract validated data
 		const snippetData = validatedData.data;
-		console.log({ snippetData });
-
 		const { title, language, snippet } = snippetData;
 
-		// Save to the database
 		const createdSnippet = await prisma.snippet.create({
 			data: {
 				title,
@@ -34,13 +30,71 @@ export async function createSnippet(data: unknown): Promise<{ id: string }> {
 			},
 		});
 
-		console.log({ createdSnippet });
-		// Return the created snippet
-		return { id: createdSnippet.id };
+		return {
+			id: createdSnippet.id,
+			success: true,
+		};
 	} catch (error) {
-		// Log unexpected errors
 		console.error('Unexpected error:', error);
-		throw new Error('An unexpected error occurred while creating the snippet.');
+		return {
+			errors: { server: ['Failed to create snippet'] },
+			success: false,
+		};
+	}
+}
+
+export async function editSnippet(prevState: ActionState | null, data: unknown): Promise<ActionState> {
+	if (!(data instanceof FormData)) {
+		throw new Error('Invalid data format. Expected FormData.');
+	}
+
+	const formData = Object.fromEntries(data.entries());
+	const validatedData = formSchema.safeParse(formData);
+
+	if (!validatedData.success) {
+		return {
+			errors: validatedData.error.flatten().fieldErrors,
+			success: false,
+		};
+	}
+
+	const { id, title, language, snippet } = validatedData.data;
+
+	if (!id) {
+		return {
+			errors: { message: ['Snippet ID is required'] },
+			success: false,
+		};
+	}
+
+	try {
+		const updatedSnippet = await prisma.snippet.update({
+			where: { id },
+			data: {
+				title,
+				language,
+				content: snippet,
+			},
+		});
+
+		if (!updatedSnippet) {
+			return {
+				errors: { message: ['Snippet not found or update failed'] },
+				success: false,
+			};
+		}
+
+		console.log('Snippet updated successfully:', updatedSnippet);
+		return {
+			id: updatedSnippet.id,
+			success: true,
+		};
+	} catch (error) {
+		console.error('Unexpected error:', error);
+		return {
+			errors: { server: ['Failed to create snippet'] },
+			success: false,
+		};
 	}
 }
 
@@ -50,61 +104,14 @@ export async function deleteSnippet(snippetId: string) {
 	}
 
 	try {
-		// Delete the snippet from the database
 		const deletedSnippet = await prisma.snippet.delete({
 			where: { id: snippetId },
 		});
 
-		// Return the deleted snippet
 		console.log({ deletedSnippet });
 		return { id: deletedSnippet.id };
 	} catch (error) {
-		// Log unexpected errors
 		console.error('Unexpected error:', error);
 		throw new Error('An unexpected error occurred while deleting the snippet.');
-	}
-}
-
-export async function editSnippet(data: unknown, snippetId?: string): Promise<{ id: string }> {
-	if (!snippetId) {
-		throw new Error('Snippet ID is required');
-	}
-
-	const formData = data instanceof FormData ? Object.fromEntries(data.entries()) : data;
-
-	// Validate the data
-	const validatedData = formSchema.safeParse(formData);
-
-	if (!validatedData.success) {
-		const errors = validatedData.error.flatten();
-		console.error('Validation failed:', errors);
-		throw new Error('Validation failed: ' + JSON.stringify(errors.fieldErrors));
-	}
-
-	// Extract validated data
-	const snippetData = validatedData.data;
-
-	const { title, language, snippet } = snippetData;
-
-	try {
-		const updatedSnippet = await prisma.snippet.update({
-			where: { id: snippetId },
-			data: {
-				title,
-				language,
-				content: snippet,
-			},
-		});
-
-		if (!updatedSnippet) {
-			throw new Error('Snippet not found or update failed');
-		}
-
-		console.log('Snippet updated successfully:', updatedSnippet);
-		return { id: updatedSnippet.id };
-	} catch (error) {
-		// Log unexpected errors
-		console.error('Unexpected error:', error);
-		throw new Error('An unexpected error occurred while editing the snippet.');
 	}
 }
