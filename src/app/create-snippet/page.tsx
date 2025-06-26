@@ -9,7 +9,7 @@ export default function Page() {
 				This information will be visible to others—please avoid sharing sensitive or private details.
 			</p>
 			<div className='mt-8'>
-				<SnippetForm action={createSnippet} actionId='createSnippet' />
+				<SnippetForm action={createSnippet} actionId='create' />
 			</div>
 		</div>
 	);

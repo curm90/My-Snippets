@@ -18,11 +18,11 @@ export default function SnippetActionButtons({ snippetId, content }: { snippetId
 		setDeleting(true);
 		try {
 			await deleteSnippet(snippetId);
-			toast.success(toastMessages.deleteSnippet.success);
+			toast.success(toastMessages.delete.success);
 			router.push('/');
 		} catch (error) {
 			console.error('Failed to delete snippet:', error);
-			toast.error(toastMessages.deleteSnippet.error);
+			toast.error(toastMessages.delete.error);
 		} finally {
 			setDeleting(false);
 			setConfirmingDelete(false);
