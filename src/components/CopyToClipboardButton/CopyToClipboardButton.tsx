@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Clipboard, Check } from 'lucide-react';
 import { MouseEvent as ReactMouseEvent, useState } from 'react';
 
-export function CopyButton({ text }: { text: string }) {
+export function CopyButton({ text, disabled }: { text: string; disabled?: boolean }) {
 	const [copied, setCopied] = useState(false);
 
 	const copy = async (e: ReactMouseEvent<HTMLButtonElement>) => {
@@ -41,7 +41,7 @@ export function CopyButton({ text }: { text: string }) {
 	};
 
 	return (
-		<Button variant='outline' size='icon' className='cursor-pointer' onClick={(e) => copy(e)}>
+		<Button variant='outline' size='icon' className='cursor-pointer' disabled={disabled} onClick={(e) => copy(e)}>
 			{copied ? <Check className='h-4 w-4' /> : <Clipboard className='h-4 w-4' />}
 		</Button>
 	);

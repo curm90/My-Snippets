@@ -24,10 +24,10 @@ export default async function Page({ params }: { params: Promise<{ snippetId: st
 			</p>
 			<div className='mt-8'>
 				<SnippetForm
-					snippetId={snippetId}
 					action={editSnippet}
-					actionId='editSnippet'
+					actionId='edit'
 					defaultValues={{
+						id: snippetId,
 						title: snippet.title,
 						language: snippet.language,
 						snippet: snippet.content,

@@ -3,11 +3,12 @@
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import { useActionState, useEffect } from 'react';
+import { LoaderCircle } from 'lucide-react';
 import CodeMirror from '@uiw/react-codemirror';
 import { nord } from '@uiw/codemirror-theme-nord';
 import { loadLanguage, langNames } from '@uiw/codemirror-extensions-langs';
 import { toast } from 'sonner';
-import { z } from 'zod';
 
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -16,23 +17,15 @@ import LanguageSelect from '@/components/LanguageSelect/LanguageSelect';
 import { FormDataType, formSchema } from '@/lib/schemas';
 import { toastMessages } from '@/constants/toastMessages';
 
-type ToastActionId = keyof typeof toastMessages;
+export default function SnippetForm({ action, defaultValues, actionId = 'create' }: SnippetFormProps) {
+	const [state, formAction, pending] = useActionState(action, null);
 
-export default function SnippetForm({
-	action,
-	actionId,
-	defaultValues,
-	snippetId,
-}: {
-	action: (data: unknown, snippetId?: string) => Promise<{ id: string } | void>;
-	actionId?: ToastActionId;
-	defaultValues?: Partial<FormDataType>;
-	snippetId?: string; // Optional for edit mode
-}) {
 	const router = useRouter();
-	const form = useForm<z.infer<typeof formSchema>>({
+
+	const form = useForm<FormDataType>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
+			id: '',
 			title: '',
 			language: '',
 			snippet: '',
@@ -40,32 +33,24 @@ export default function SnippetForm({
 		},
 	});
 
-	async function handleSubmit(data: FormDataType) {
-		try {
-			const formData = new FormData();
-			formData.append('title', data.title);
-			formData.append('language', data.language);
-			formData.append('snippet', data.snippet);
+	console.log({ state, formAction, pending });
 
-			await action(formData, snippetId);
+	useEffect(() => {
+		if (!state) return;
+		console.log({ state });
 
-			if (actionId && toastMessages[actionId]) {
-				toast.success(toastMessages[actionId].success);
-			}
-
-			router.push('/');
-		} catch (error) {
-			console.error(error);
-			if (actionId && toastMessages[actionId]) {
-				toast.error(toastMessages[actionId].error);
-			}
-			console.error(error);
+		if (state.success && state.id) {
+			router.push(`/snippet/${state.id}`);
+			toast.success(toastMessages[actionId].success);
+		} else if (state.errors) {
+			toast.error(toastMessages[actionId].error);
+			// Handle form errors...
 		}
-	}
+	}, [state, router, actionId]);
 
 	return (
 		<Form {...form}>
-			<form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-8'>
+			<form action={formAction} className='space-y-8'>
 				<div className='grid grid-cols-2 gap-4'>
 					<FormField
 						control={form.control}
@@ -94,6 +79,27 @@ export default function SnippetForm({
 						)}
 					/>
 				</div>
+				{actionId === 'edit' ? (
+					<FormField
+						control={form.control}
+						name='id'
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel className='font-semibold'>Snippet id</FormLabel>
+								<FormControl>
+									<Input
+										placeholder='Id'
+										readOnly
+										{...field}
+										value={field.value}
+										className='pointer-events-none text-gray-500'
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+				) : null}
 				<FormField
 					control={form.control}
 					name='snippet'
@@ -121,11 +127,21 @@ export default function SnippetForm({
 					}}
 				/>
 				<div className='flex items-center justify-end space-x-2'>
-					<Button type='button' variant='outline' className='cursor-pointer' onClick={() => form.reset()}>
+					<Button
+						type='button'
+						variant='outline'
+						className='cursor-pointer'
+						onClick={() => form.reset()}
+						disabled={pending || !form.formState.isValid}
+					>
 						Cancel
 					</Button>
-					<Button type='submit' className='bg-action text-foreground hover:bg-action/90 cursor-pointer'>
-						Save
+					<Button
+						type='submit'
+						className='bg-action text-foreground hover:bg-action/90 cursor-pointer w-[65px]'
+						disabled={pending || !form.formState.isValid}
+					>
+						{pending ? <LoaderCircle className='w-6 h-6 animate-spin' /> : 'Save'}
 					</Button>
 				</div>
 			</form>
