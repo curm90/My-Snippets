@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { Clipboard, SquarePen, Trash2, Check, X } from 'lucide-react';
+import { Clipboard, SquarePen, Trash2, Check, X, LoaderCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { deleteSnippet } from '@/data-access/snippets';
 import { Button } from '@/components/ui/button';
@@ -11,21 +11,22 @@ import { toastMessages } from '@/constants/toastMessages';
 
 export default function SnippetActionButtons({ snippetId, content }: { snippetId: string; content: string }) {
 	const [confirmingDelete, setConfirmingDelete] = useState(false);
+	const [deleting, setDeleting] = useState(false);
 	const router = useRouter();
 
 	const handleDelete = async () => {
+		setDeleting(true);
 		try {
 			await deleteSnippet(snippetId);
-
-			console.log('Snippet deleted successfully');
 			toast.success(toastMessages.deleteSnippet.success);
+			router.push('/');
 		} catch (error) {
 			console.error('Failed to delete snippet:', error);
 			toast.error(toastMessages.deleteSnippet.error);
 		} finally {
+			setDeleting(false);
 			setConfirmingDelete(false);
 		}
-		router.push('/');
 	};
 
 	const buttons = [
@@ -50,7 +51,7 @@ export default function SnippetActionButtons({ snippetId, content }: { snippetId
 			? [
 					{
 						id: 'confirm-delete',
-						icon: Check,
+						icon: deleting ? LoaderCircle : Check,
 						label: 'Confirm Delete',
 						action: handleDelete,
 						variant: 'destructive' as const,
@@ -78,13 +79,14 @@ export default function SnippetActionButtons({ snippetId, content }: { snippetId
 		<div className='flex gap-2'>
 			{buttons.map(({ id, icon: Icon, label, action, variant = 'outline' }) =>
 				id === 'copy' ? (
-					<CopyButton key={id} text={content} />
+					<CopyButton key={id} text={content} disabled={deleting} />
 				) : (
 					<Button
 						key={id}
 						variant={variant}
 						size='icon'
 						className='cursor-pointer z-20'
+						disabled={deleting}
 						onClick={(e) => {
 							e.preventDefault();
 							e.stopPropagation();
@@ -92,7 +94,11 @@ export default function SnippetActionButtons({ snippetId, content }: { snippetId
 						}}
 						title={label}
 					>
-						<Icon className='h-4 w-4' />
+						{deleting && id === 'confirm-delete' ? (
+							<Icon className='size-4 animate-spin' />
+						) : (
+							<Icon className='h-4 w-4' />
+						)}
 					</Button>
 				),
 			)}
