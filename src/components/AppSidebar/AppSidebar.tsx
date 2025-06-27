@@ -1,23 +1,28 @@
 import Link from 'next/link';
-import {
-	Sidebar,
-	SidebarContent,
-	SidebarMenu,
-	SidebarMenuButton,
-	SidebarMenuItem,
-} from '@/components/ui/sidebar';
+import { Sidebar, SidebarContent, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
+import FolderList from '@/components/FolderLIst/FolderList';
+import CreateFolderForm from '@/components/CreateFolderForm/CreateFolderForm';
+import prisma from '@/lib/prisma';
 
-export default function AppSidebar() {
+export default async function AppSidebar() {
+	const folders = await prisma.folder.findMany();
+
 	return (
 		<Sidebar className='h-[calc(100vh-var(--navbar-height))] border-r-4 border-r-secondary'>
 			<SidebarContent className='px-4 py-6'>
-				<SidebarMenu>
+				<SidebarMenu className='flex flex-col gap-4'>
 					<SidebarMenuItem>
-						<SidebarMenuButton className='bg-action text-center hover:bg-chart-4/85 cursor-pointer'>
+						<SidebarMenuButton className='bg-action text-center hover:bg-chart-4/85 cursor-pointer mb-4'>
 							<Link href='/create-snippet' className='text-md font-bold text-center w-full'>
 								Create Snippet
 							</Link>
 						</SidebarMenuButton>
+					</SidebarMenuItem>
+					<SidebarMenuItem>
+						<CreateFolderForm />
+					</SidebarMenuItem>
+					<SidebarMenuItem>
+						<FolderList folders={folders} />
 					</SidebarMenuItem>
 				</SidebarMenu>
 			</SidebarContent>
