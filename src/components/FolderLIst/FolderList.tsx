@@ -1,15 +1,13 @@
 import Link from 'next/link';
 import { Cog } from 'lucide-react';
-import { Button } from '../ui/button';
+import { Button } from '@/components/ui/button';
 
 export default function FolderList({ folders }: Folders) {
-	console.log({ folders });
-
 	return (
 		<ul>
 			{folders.map((folder) => (
 				<li key={folder.id} className='text-sm font-semibold text-muted-foreground flex items-center justify-between'>
-					<Link href='#' className='w-full flex justify-between py-2 px-0 cursor-pointer'>
+					<Link href={`/folder/${folder.id}`} className='w-full flex justify-between py-2 px-0 cursor-pointer'>
 						<div className='flex items-center gap-2'>
 							<div className='w-8 h-8 bg-accent flex justify-center items-center rounded-md'>
 								{folder.name?.[0] || 'F'}
