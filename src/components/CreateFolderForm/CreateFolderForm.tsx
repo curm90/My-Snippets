@@ -2,9 +2,10 @@
 
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { CircleX, FolderPlus, LoaderCircle } from 'lucide-react';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { CircleX, FolderPlus, LoaderCircle } from 'lucide-react';
+import { toast } from 'sonner';
+import { z } from 'zod';
 
 import { Form } from '@/components/ui/form';
 import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
@@ -32,12 +33,12 @@ export default function CreateFolderForm() {
 		setIsSubmitting(true);
 		try {
 			await createFolder(data);
-			alert('Folder created successfully!');
+			toast.success('Folder created successfully!');
 			form.reset();
 			setShowForm(false);
 		} catch (error) {
 			console.error('Failed to create folder:', error);
-			alert('Failed to create folder');
+			toast.error('Failed to create folder');
 		} finally {
 			setIsSubmitting(false);
 		}
