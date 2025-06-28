@@ -13,7 +13,7 @@ export default function FolderSelect({
 }) {
 	return (
 		<Select name={name} onValueChange={onChange} value={value} defaultValue={value}>
-			<SelectTrigger className='w-[180px]'>
+			<SelectTrigger className='w-full'>
 				<SelectValue placeholder='Folder' />
 			</SelectTrigger>
 			<SelectContent>
