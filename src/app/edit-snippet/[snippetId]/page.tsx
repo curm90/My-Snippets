@@ -4,6 +4,7 @@ import prisma from '@/lib/prisma';
 
 export default async function Page({ params }: { params: Promise<{ snippetId: string }> }) {
 	const { snippetId } = await params;
+	const folders = await prisma.folder.findMany();
 
 	const snippet = await prisma.snippet.findUnique({
 		where: { id: snippetId },
@@ -26,11 +27,13 @@ export default async function Page({ params }: { params: Promise<{ snippetId: st
 				<SnippetForm
 					action={editSnippet}
 					actionId='edit'
+					folders={folders}
 					defaultValues={{
 						id: snippetId,
 						title: snippet.title,
 						language: snippet.language,
 						snippet: snippet.content,
+						folderId: snippet.folderId || '',
 					}}
 				/>
 			</div>
