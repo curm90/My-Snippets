@@ -3,7 +3,7 @@ import prisma from '@/lib/prisma';
 import SnippetList from '@/components/SnippetList/SnippetList';
 
 export default async function Page({ params }: { params: { folderId: Promise<string> } }) {
-	const folderId = await params.folderId;
+	const { folderId } = await params;
 	const snippets = await prisma.snippet.findMany({
 		where: { folderId },
 	});
