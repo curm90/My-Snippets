@@ -32,11 +32,11 @@ export default function RootLayout({
 			<body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
 				<ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
 					<SidebarProvider>
-						<main className='w-full h-screen bg-background text-foreground'>
+						<main className='w-full min-h-[calc(100vh-var(--navbar-height))] bg-background text-foreground'>
 							<Navigation />
 							<div className='flex pt-[var(--navbar-height)]'>
 								<AppSidebar />
-								<div className='flex flex-col h-[calc(100vh-var(--navbar-height))] w-full'>{children}</div>
+								<div className='flex flex-col w-full'>{children}</div>
 							</div>
 						</main>
 					</SidebarProvider>
