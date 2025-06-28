@@ -31,3 +31,21 @@ export async function createFolder(formData: unknown): Promise<Folder> {
 		throw new Error('Failed to create folder');
 	}
 }
+
+export async function addSnippetToFolder(snippetId: string, folderId: string): Promise<void> {
+	if (!snippetId || !folderId) {
+		throw new Error('Snippet ID and Folder ID are required');
+	}
+
+	try {
+		const updatedSnippet = await prisma.snippet.update({
+			where: { id: snippetId },
+			data: { folderId },
+		});
+
+		console.log({ updatedSnippet });
+	} catch (error) {
+		console.log('Error adding snippet to folder:', error);
+		throw new Error('Failed to add snippet to folder');
+	}
+}
