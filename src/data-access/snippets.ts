@@ -20,13 +20,14 @@ export async function createSnippet(prevState: ActionState | null, data: unknown
 		}
 
 		const snippetData = validatedData.data;
-		const { title, language, snippet } = snippetData;
+		const { title, language, snippet, folderId } = snippetData;
 
 		const createdSnippet = await prisma.snippet.create({
 			data: {
 				title,
 				language,
 				content: snippet,
+				folderId: folderId || null,
 			},
 		});
 
@@ -51,6 +52,8 @@ export async function editSnippet(prevState: ActionState | null, data: unknown):
 	const formData = Object.fromEntries(data.entries());
 	const validatedData = formSchema.safeParse(formData);
 
+	console.log({ validatedData });
+
 	if (!validatedData.success) {
 		return {
 			errors: validatedData.error.flatten().fieldErrors,
@@ -58,7 +61,7 @@ export async function editSnippet(prevState: ActionState | null, data: unknown):
 		};
 	}
 
-	const { id, title, language, snippet } = validatedData.data;
+	const { id, title, language, snippet, folderId } = validatedData.data;
 
 	if (!id) {
 		return {
@@ -74,6 +77,7 @@ export async function editSnippet(prevState: ActionState | null, data: unknown):
 				title,
 				language,
 				content: snippet,
+				folderId: folderId || null,
 			},
 		});
 
