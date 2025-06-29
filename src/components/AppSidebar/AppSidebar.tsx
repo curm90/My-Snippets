@@ -10,9 +10,9 @@ export default async function AppSidebar() {
 	return (
 		<Sidebar className='h-[calc(100vh-var(--navbar-height))] border-r-4 border-r-secondary'>
 			<SidebarContent className='px-4 py-6'>
-				<SidebarMenu className='flex flex-col gap-4'>
+				<SidebarMenu className='flex flex-col'>
 					<SidebarMenuItem>
-						<SidebarMenuButton className='bg-action text-center hover:bg-chart-4/85 cursor-pointer mb-4'>
+						<SidebarMenuButton className='bg-action text-center hover:bg-chart-4/85 cursor-pointer mb-8'>
 							<Link href='/create-snippet' className='text-md font-bold text-center w-full'>
 								Create Snippet
 							</Link>
@@ -21,9 +21,7 @@ export default async function AppSidebar() {
 					<SidebarMenuItem>
 						<CreateFolderForm />
 					</SidebarMenuItem>
-					<SidebarMenuItem>
-						<FolderList folders={folders} />
-					</SidebarMenuItem>
+					<FolderList folders={folders} />
 				</SidebarMenu>
 			</SidebarContent>
 		</Sidebar>

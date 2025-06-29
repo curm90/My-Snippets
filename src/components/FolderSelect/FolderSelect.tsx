@@ -8,7 +8,7 @@ export default function FolderSelect({
 }: {
 	onChange?: (value: string) => void;
 	value?: string;
-	folders?: { id: string; name: string }[];
+	folders: Folder[];
 	name: string;
 }) {
 	return (
