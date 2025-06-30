@@ -35,8 +35,6 @@ export default function SnippetForm({ action, folders, defaultValues, actionId =
 		},
 	});
 
-	console.log({ state, formAction, pending });
-
 	useEffect(() => {
 		if (!state) return;
 
@@ -48,6 +46,8 @@ export default function SnippetForm({ action, folders, defaultValues, actionId =
 			// Handle form errors...
 		}
 	}, [state, router, actionId]);
+
+	console.log({ folders });
 
 	return (
 		<Form {...form}>
@@ -134,13 +134,7 @@ export default function SnippetForm({ action, folders, defaultValues, actionId =
 						<FormItem>
 							<FormLabel className='font-semibold'>Folder</FormLabel>
 							<FormControl>
-								<FolderSelect
-									name='folderId'
-									onChange={field.onChange}
-									value={field.value}
-									{...field}
-									folders={folders}
-								/>
+								<FolderSelect onChange={field.onChange} value={field.value} folders={folders} />
 							</FormControl>
 							<FormMessage />
 						</FormItem>

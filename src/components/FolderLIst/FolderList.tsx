@@ -1,7 +1,7 @@
 import React from 'react';
 import Folder from '@/components/Folder/Folder';
 
-export default function FolderList({ folders }: Folders) {
+export default function FolderList({ folders }: FolderListProps) {
 	return (
 		<>
 			{folders.map((folder) => (

@@ -10,6 +10,6 @@ type ActionId = 'create' | 'edit';
 type SnippetFormProps = {
 	action: ServerAction;
 	actionId?: ActionId;
-	folders?: { id: string; name: string }[];
+	folders: Folders;
 	defaultValues?: Partial<FormDataType>;
 };

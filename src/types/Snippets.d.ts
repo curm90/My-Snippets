@@ -3,5 +3,5 @@ type Snippet = {
 	title: string;
 	language: string;
 	content: string;
-	folderId?: string;
+	folderId?: string | null;
 };

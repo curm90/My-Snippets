@@ -2,7 +2,7 @@ import React from 'react';
 import prisma from '@/lib/prisma';
 import SnippetList from '@/components/SnippetList/SnippetList';
 
-export default async function Page({ params }: { params: { folderId: Promise<string> } }) {
+export default async function Page({ params }: { params: Promise<{ folderId: string }> }) {
 	const { folderId } = await params;
 	const snippets = await prisma.snippet.findMany({
 		where: { folderId },

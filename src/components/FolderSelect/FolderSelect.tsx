@@ -1,18 +1,8 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
-export default function FolderSelect({
-	onChange,
-	value,
-	folders,
-	name = 'folderId',
-}: {
-	onChange?: (value: string) => void;
-	value?: string;
-	folders: Folder[];
-	name: string;
-}) {
+export default function FolderSelect({ onChange, value, folders }: FolderSelectProps) {
 	return (
-		<Select name={name} onValueChange={onChange} value={value} defaultValue={value}>
+		<Select name='folderId' onValueChange={onChange} value={value} defaultValue={value}>
 			<SelectTrigger className='w-full'>
 				<SelectValue placeholder='Folder' />
 			</SelectTrigger>
