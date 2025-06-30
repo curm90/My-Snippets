@@ -2,6 +2,7 @@
 
 import prisma from '@/lib/prisma';
 import { folderSchema } from '@/lib/schemas';
+import { revalidatePath } from 'next/cache';
 
 export async function createFolder(formData: unknown): Promise<Folder> {
 	try {
@@ -25,6 +26,7 @@ export async function createFolder(formData: unknown): Promise<Folder> {
 		});
 
 		console.log({ createdFolder });
+		revalidatePath('/');
 		return createdFolder;
 	} catch (error) {
 		console.log('Error creating folder:', error);
@@ -43,6 +45,7 @@ export async function deleteFolder(folderId: string): Promise<void> {
 		});
 
 		console.log(`Folder with ID ${folderId} deleted successfully`);
+		revalidatePath('/');
 	} catch (error) {
 		console.log('Error deleting folder:', error);
 		throw new Error('Failed to delete folder');
