@@ -32,20 +32,19 @@ export async function createFolder(formData: unknown): Promise<Folder> {
 	}
 }
 
-export async function addSnippetToFolder(snippetId: string, folderId: string): Promise<void> {
-	if (!snippetId || !folderId) {
-		throw new Error('Snippet ID and Folder ID are required');
-	}
-
+export async function deleteFolder(folderId: string): Promise<void> {
 	try {
-		const updatedSnippet = await prisma.snippet.update({
-			where: { id: snippetId },
-			data: { folderId },
+		if (!folderId) {
+			throw new Error('Folder ID is required');
+		}
+
+		await prisma.folder.delete({
+			where: { id: folderId },
 		});
 
-		console.log({ updatedSnippet });
+		console.log(`Folder with ID ${folderId} deleted successfully`);
 	} catch (error) {
-		console.log('Error adding snippet to folder:', error);
-		throw new Error('Failed to add snippet to folder');
+		console.log('Error deleting folder:', error);
+		throw new Error('Failed to delete folder');
 	}
 }
