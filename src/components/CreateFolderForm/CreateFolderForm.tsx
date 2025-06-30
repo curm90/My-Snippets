@@ -5,7 +5,6 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CircleX, FolderPlus, LoaderCircle } from 'lucide-react';
 import { toast } from 'sonner';
-import { z } from 'zod';
 
 import { Form } from '@/components/ui/form';
 import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
@@ -13,8 +12,6 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { folderSchema } from '@/lib/schemas';
 import { createFolder } from '@/data-access/folders';
-
-type FolderFormValues = z.infer<typeof folderSchema>;
 
 export default function CreateFolderForm() {
 	const [showForm, setShowForm] = useState(false);
