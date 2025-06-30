@@ -14,10 +14,11 @@ import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import LanguageSelect from '@/components/LanguageSelect/LanguageSelect';
+import FolderSelect from '@/components/FolderSelect/FolderSelect';
 import { FormDataType, formSchema } from '@/lib/schemas';
 import { toastMessages } from '@/constants/toastMessages';
 
-export default function SnippetForm({ action, defaultValues, actionId = 'create' }: SnippetFormProps) {
+export default function SnippetForm({ action, folders, defaultValues, actionId = 'create' }: SnippetFormProps) {
 	const [state, formAction, pending] = useActionState(action, null);
 
 	const router = useRouter();
@@ -29,15 +30,13 @@ export default function SnippetForm({ action, defaultValues, actionId = 'create'
 			title: '',
 			language: '',
 			snippet: '',
+			folderId: '',
 			...defaultValues,
 		},
 	});
 
-	console.log({ state, formAction, pending });
-
 	useEffect(() => {
 		if (!state) return;
-		console.log({ state });
 
 		if (state.success && state.id) {
 			router.push(`/snippet/${state.id}`);
@@ -47,6 +46,8 @@ export default function SnippetForm({ action, defaultValues, actionId = 'create'
 			// Handle form errors...
 		}
 	}, [state, router, actionId]);
+
+	console.log({ folders });
 
 	return (
 		<Form {...form}>
@@ -125,6 +126,19 @@ export default function SnippetForm({ action, defaultValues, actionId = 'create'
 							</FormItem>
 						);
 					}}
+				/>
+				<FormField
+					control={form.control}
+					name='folderId'
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel className='font-semibold'>Folder</FormLabel>
+							<FormControl>
+								<FolderSelect onChange={field.onChange} value={field.value} folders={folders} />
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
 				/>
 				<div className='flex items-center justify-end space-x-2'>
 					<Button

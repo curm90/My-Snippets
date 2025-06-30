@@ -1,7 +1,10 @@
 import SnippetForm from '@/components/SnippetForm/SnippetForm';
 import { createSnippet } from '@/data-access/snippets';
+import prisma from '@/lib/prisma';
 
-export default function Page() {
+export default async function Page() {
+	const folders = await prisma.folder.findMany();
+
 	return (
 		<div className='py-6 px-8'>
 			<h1 className='font-semibold text-xl'>Create a Snippet</h1>
@@ -9,7 +12,7 @@ export default function Page() {
 				This information will be visible to others—please avoid sharing sensitive or private details.
 			</p>
 			<div className='mt-8'>
-				<SnippetForm action={createSnippet} actionId='create' />
+				<SnippetForm action={createSnippet} actionId='create' folders={folders} />
 			</div>
 		</div>
 	);
