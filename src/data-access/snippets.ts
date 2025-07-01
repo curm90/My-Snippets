@@ -52,8 +52,6 @@ export async function editSnippet(prevState: ActionState | null, data: unknown):
 	const formData = Object.fromEntries(data.entries());
 	const validatedData = formSchema.safeParse(formData);
 
-	console.log({ validatedData });
-
 	if (!validatedData.success) {
 		return {
 			errors: validatedData.error.flatten().fieldErrors,
@@ -112,7 +110,6 @@ export async function deleteSnippet(snippetId: string) {
 			where: { id: snippetId },
 		});
 
-		console.log({ deletedSnippet });
 		return { id: deletedSnippet.id };
 	} catch (error) {
 		console.error('Unexpected error:', error);

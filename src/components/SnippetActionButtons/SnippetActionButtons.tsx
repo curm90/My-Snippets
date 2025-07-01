@@ -46,7 +46,6 @@ export default function SnippetActionButtons({ snippetId, content }: { snippetId
 			icon: SquarePen,
 			label: 'Edit',
 			action: () => {
-				console.log('Edit action triggered');
 				router.push(`/edit-snippet/${snippetId}`);
 			},
 		},

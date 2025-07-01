@@ -17,16 +17,13 @@ export default function SearchBar() {
 	const isUserTypingRef = useRef(false); // Initialize search query from URL params and clear when navigating away from search
 	useEffect(() => {
 		const q = searchParams.get('q');
-		console.log('SearchBar useEffect - pathname:', pathname, 'q:', q);
 
 		if (pathname === '/' && q) {
 			// On home page with search query - show it
-			console.log('Setting search query to:', q);
 			setIsNavigationClear(false);
 			setSearchQuery(q);
 		} else {
 			// On other pages or home without search - clear search input
-			console.log('Clearing search query due to navigation');
 			setIsNavigationClear(true);
 			setSearchQuery('');
 		}
@@ -56,7 +53,6 @@ export default function SearchBar() {
 	useEffect(() => {
 		// Don't perform search if we just cleared due to navigation
 		if (isNavigationClear && !debouncedSearchQuery.trim()) {
-			console.log('Skipping search due to navigation clear');
 			setIsNavigationClear(false);
 			return;
 		}
@@ -67,19 +63,16 @@ export default function SearchBar() {
 		const shouldSearch = isUserTypingRef.current || pathname === '/';
 
 		if (!shouldSearch && pathname !== '/') {
-			console.log('Skipping search - user not typing and not on home page');
 			return;
 		}
 
 		if (debouncedSearchQuery.trim()) {
 			// Search when there's a query
-			console.log('Performing search for:', debouncedSearchQuery);
 			performSearch(debouncedSearchQuery);
 			// Reset typing flag after search
 			isUserTypingRef.current = false;
 		} else if (pathname === '/' && urlSearchQuery && !debouncedSearchQuery.trim()) {
 			// Only clear search when on home page and URL has query but debounced query is empty
-			console.log('Clearing search on home page');
 			performSearch(debouncedSearchQuery);
 		}
 	}, [debouncedSearchQuery, performSearch, searchParams, pathname, isNavigationClear]);

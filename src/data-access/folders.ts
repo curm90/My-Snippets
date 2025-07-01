@@ -25,7 +25,6 @@ export async function createFolder(formData: unknown): Promise<Folder> {
 			},
 		});
 
-		console.log({ createdFolder });
 		revalidatePath('/');
 		return createdFolder;
 	} catch (error) {
