@@ -10,16 +10,21 @@ import {
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { deleteFolder } from '@/data-access/folders';
+import { useDeletingFolders } from '@/contexts/DeletingFoldersContext';
 
 export default function DeleteFolderDropdown({ folderId }: { folderId: string }) {
+	const { setFolderDeleting } = useDeletingFolders();
+
 	async function handleDelete() {
+		setFolderDeleting(folderId, true);
 		try {
 			await deleteFolder(folderId);
-
 			toast.success('Folder deleted successfully!');
 		} catch (error) {
 			toast.error('Failed to delete folder');
 			console.log({ error });
+		} finally {
+			setFolderDeleting(folderId, false);
 		}
 	}
 
