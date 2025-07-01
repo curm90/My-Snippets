@@ -61,8 +61,6 @@ export async function createSnippet(prevState: ActionState | null, data: unknown
 			},
 		});
 
-		console.log({ createdSnippet, tagConnections });
-
 		return {
 			id: createdSnippet.id,
 			success: true,
@@ -133,6 +131,9 @@ export async function editSnippet(prevState: ActionState | null, data: unknown):
 				snippetTags: {
 					set: tagConnections, // Replace all existing tags with new ones
 				},
+			},
+			include: {
+				snippetTags: true,
 			},
 		});
 

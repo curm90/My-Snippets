@@ -145,11 +145,19 @@ export default function SnippetForm({ action, folders, defaultValues, actionId =
 						<FormItem>
 							<FormLabel className='font-semibold'>Tags</FormLabel>
 							<FormControl>
-								<TagInput
-									value={field.value || ''}
-									onChange={field.onChange}
-									placeholder='Enter tags separated by commas (e.g., react, javascript, hooks)'
-								/>
+								<>
+									<TagInput
+										value={field.value || ''}
+										onChange={field.onChange}
+										placeholder='Enter tags separated by commas (e.g., react, javascript, hooks)'
+									/>
+									<input
+										name='tags'
+										value={field.value || ''}
+										onChange={(e) => field.onChange(e.target.value)}
+										className='hidden'
+									/>
+								</>
 							</FormControl>
 							<FormMessage />
 						</FormItem>
