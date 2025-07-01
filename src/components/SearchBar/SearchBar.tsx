@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { useDebounce } from 'use-debounce';
 import { Search, X } from 'lucide-react';
@@ -13,15 +13,21 @@ export default function SearchBar() {
 	const searchParams = useSearchParams();
 	const [searchQuery, setSearchQuery] = useState('');
 	const [debouncedSearchQuery] = useDebounce(searchQuery, 500);
-
-	// Initialize search query from URL params and clear when navigating away from search
+	const [isNavigationClear, setIsNavigationClear] = useState(false);
+	const isUserTypingRef = useRef(false); // Initialize search query from URL params and clear when navigating away from search
 	useEffect(() => {
 		const q = searchParams.get('q');
+		console.log('SearchBar useEffect - pathname:', pathname, 'q:', q);
+
 		if (pathname === '/' && q) {
 			// On home page with search query - show it
+			console.log('Setting search query to:', q);
+			setIsNavigationClear(false);
 			setSearchQuery(q);
 		} else {
 			// On other pages or home without search - clear search input
+			console.log('Clearing search query due to navigation');
+			setIsNavigationClear(true);
 			setSearchQuery('');
 		}
 	}, [searchParams, pathname]);
@@ -48,21 +54,39 @@ export default function SearchBar() {
 
 	// Automatically search when debounced query changes
 	useEffect(() => {
-		// Only perform search if:
-		// 1. There's a search query (from any page), OR
-		// 2. We're on home page and clearing a search (URL has 'q' param but debounced query is empty)
+		// Don't perform search if we just cleared due to navigation
+		if (isNavigationClear && !debouncedSearchQuery.trim()) {
+			console.log('Skipping search due to navigation clear');
+			setIsNavigationClear(false);
+			return;
+		}
+
+		// Only perform search if user is actively typing or we're on home page
+		// This prevents stale debounced queries from interfering with navigation
 		const urlSearchQuery = searchParams.get('q');
+		const shouldSearch = isUserTypingRef.current || pathname === '/';
+
+		if (!shouldSearch && pathname !== '/') {
+			console.log('Skipping search - user not typing and not on home page');
+			return;
+		}
 
 		if (debouncedSearchQuery.trim()) {
-			// Always search when there's a query (from any page)
+			// Search when there's a query
+			console.log('Performing search for:', debouncedSearchQuery);
 			performSearch(debouncedSearchQuery);
+			// Reset typing flag after search
+			isUserTypingRef.current = false;
 		} else if (pathname === '/' && urlSearchQuery && !debouncedSearchQuery.trim()) {
-			// Only clear search when on home page
+			// Only clear search when on home page and URL has query but debounced query is empty
+			console.log('Clearing search on home page');
 			performSearch(debouncedSearchQuery);
 		}
-	}, [debouncedSearchQuery, performSearch, searchParams, pathname]);
+	}, [debouncedSearchQuery, performSearch, searchParams, pathname, isNavigationClear]);
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setIsNavigationClear(false); // User is typing, not navigation
+		isUserTypingRef.current = true; // Mark that user is actively typing
 		setSearchQuery(e.target.value);
 	};
 
@@ -74,6 +98,7 @@ export default function SearchBar() {
 	};
 
 	const clearSearch = () => {
+		isUserTypingRef.current = true; // Mark as user action
 		setSearchQuery('');
 		router.push('/');
 	};
