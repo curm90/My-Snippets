@@ -30,7 +30,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ q
 					</p>
 				)}
 			</div>
-			<SnippetListWrapper snippets={snippets} />
+			<SnippetListWrapper snippets={snippets} searchQuery={searchQuery} />
 		</section>
 	);
 }
