@@ -18,13 +18,7 @@ export default async function Page({ params }: { params: Promise<{ snippetId: st
 
 	return (
 		<section className='py-4 px-6'>
-			<SnippetCard 
-				id={id} 
-				title={title} 
-				language={language} 
-				content={content} 
-				showFullContent 
-			/>
+			<SnippetCard id={id} title={title} language={language} content={content} showFullContent />
 		</section>
 	);
 }

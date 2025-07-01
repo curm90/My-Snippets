@@ -37,7 +37,7 @@ export default async function Page({ params }: { params: Promise<{ snippetId: st
 						language: snippet.language,
 						snippet: snippet.content,
 						folderId: snippet.folderId || '',
-						tags: snippet.snippetTags.map(tag => tag.name),
+						tags: snippet.snippetTags.map((tag) => tag.name),
 					}}
 				/>
 			</div>

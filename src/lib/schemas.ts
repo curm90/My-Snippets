@@ -13,8 +13,11 @@ export const formSchema = z.object({
 // Processing schema that transforms tags string to array
 export const processedFormSchema = formSchema.transform((data) => ({
 	...data,
-	tags: data.tags 
-		? data.tags.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0)
+	tags: data.tags
+		? data.tags
+				.split(',')
+				.map((tag) => tag.trim())
+				.filter((tag) => tag.length > 0)
 		: [],
 }));
 

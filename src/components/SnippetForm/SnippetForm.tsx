@@ -33,8 +33,8 @@ export default function SnippetForm({ action, folders, defaultValues, actionId =
 			snippet: defaultValues?.snippet || '',
 			folderId: defaultValues?.folderId || '',
 			// Convert array of tags to comma-separated string for form display
-			tags: defaultValues?.tags 
-				? Array.isArray(defaultValues.tags) 
+			tags: defaultValues?.tags
+				? Array.isArray(defaultValues.tags)
 					? defaultValues.tags.join(', ')
 					: defaultValues.tags
 				: '',
@@ -145,10 +145,10 @@ export default function SnippetForm({ action, folders, defaultValues, actionId =
 						<FormItem>
 							<FormLabel className='font-semibold'>Tags</FormLabel>
 							<FormControl>
-								<TagInput 
+								<TagInput
 									value={field.value || ''}
 									onChange={field.onChange}
-									placeholder='Enter tags separated by commas (e.g., react, javascript, hooks)' 
+									placeholder='Enter tags separated by commas (e.g., react, javascript, hooks)'
 								/>
 							</FormControl>
 							<FormMessage />
