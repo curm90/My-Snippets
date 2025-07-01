@@ -1,12 +1,11 @@
 'use client';
 
-import { useState, useEffect, useCallback, Suspense } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { useDebounce } from 'use-debounce';
 import { Search, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import SearchBarSkeleton from './SearchBarSkeleton';
 
 export default function SearchBar() {
 	const router = useRouter();
@@ -82,9 +81,7 @@ export default function SearchBar() {
 	return (
 		<div className='relative max-w-sm w-full'>
 			<div className='relative'>
-				<Suspense fallback={<SearchBarSkeleton />}>
-					<Search className='absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4' />
-				</Suspense>
+				<Search className='absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4' />
 				<Input
 					type='text'
 					placeholder='Search snippets...'
