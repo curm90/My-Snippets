@@ -1,6 +1,5 @@
-import React from 'react';
 import prisma from '@/lib/prisma';
-import SnippetList from '@/components/SnippetList/SnippetList';
+import SnippetListWrapper from '@/components/SnippetListWrapper/SnippetListWrapper';
 
 export default async function Page({ params }: { params: Promise<{ folderId: string }> }) {
 	const { folderId } = await params;
@@ -11,7 +10,7 @@ export default async function Page({ params }: { params: Promise<{ folderId: str
 	return (
 		<section className='py-4 px-6'>
 			<h1 className='text-3xl'>Welcome Liam!</h1>
-			<SnippetList snippets={snippets} />
+			<SnippetListWrapper snippets={snippets} />
 		</section>
 	);
 }

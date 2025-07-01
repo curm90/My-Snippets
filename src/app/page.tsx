@@ -1,4 +1,4 @@
-import SnippetList from '@/components/SnippetList/SnippetList';
+import SnippetListWrapper from '@/components/SnippetListWrapper/SnippetListWrapper';
 import prisma from '@/lib/prisma';
 
 export default async function Home() {
@@ -7,7 +7,7 @@ export default async function Home() {
 	return (
 		<section className='py-4 px-6'>
 			<h1 className='text-3xl'>Welcome Liam!</h1>
-			<SnippetList snippets={snippets} />
+			<SnippetListWrapper snippets={snippets} />
 		</section>
 	);
 }
