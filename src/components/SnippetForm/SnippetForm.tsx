@@ -47,8 +47,6 @@ export default function SnippetForm({ action, folders, defaultValues, actionId =
 		}
 	}, [state, router, actionId]);
 
-	console.log({ folders });
-
 	return (
 		<Form {...form}>
 			<form action={formAction} className='space-y-8'>
@@ -141,13 +139,7 @@ export default function SnippetForm({ action, folders, defaultValues, actionId =
 					)}
 				/>
 				<div className='flex items-center justify-end space-x-2'>
-					<Button
-						type='button'
-						variant='outline'
-						className='cursor-pointer'
-						onClick={() => form.reset()}
-						disabled={pending || !form.formState.isValid}
-					>
+					<Button type='button' variant='outline' className='cursor-pointer' onClick={() => form.reset()}>
 						Cancel
 					</Button>
 					<Button
