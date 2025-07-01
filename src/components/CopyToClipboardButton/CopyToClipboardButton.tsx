@@ -1,8 +1,9 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
-import { Clipboard, Check } from 'lucide-react';
 import { MouseEvent as ReactMouseEvent, useState } from 'react';
+import { toast } from 'sonner';
+import { Clipboard, Check } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 export function CopyButton({ text, disabled }: { text: string; disabled?: boolean }) {
 	const [copied, setCopied] = useState(false);
@@ -33,9 +34,11 @@ export function CopyButton({ text, disabled }: { text: string; disabled?: boolea
 				document.execCommand('copy');
 				document.body.removeChild(textarea);
 				setCopied(true);
+				toast.success('Copied to clipboard!');
 				setTimeout(() => setCopied(false), 2000);
 			} catch (fallbackErr) {
 				console.error('Fallback copy method also failed:', fallbackErr);
+				toast.error('Failed to copy text. Please try again.');
 			}
 		}
 	};
