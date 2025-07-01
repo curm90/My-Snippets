@@ -8,23 +8,26 @@ import { deleteSnippet } from '@/data-access/snippets';
 import { Button } from '@/components/ui/button';
 import { CopyButton } from '@/components/CopyToClipboardButton/CopyToClipboardButton';
 import { toastMessages } from '@/constants/toastMessages';
+import { useDeletingSnippets } from '@/contexts/DeletingSnippetsContext';
 
 export default function SnippetActionButtons({ snippetId, content }: { snippetId: string; content: string }) {
 	const [confirmingDelete, setConfirmingDelete] = useState(false);
-	const [deleting, setDeleting] = useState(false);
+	const { setSnippetDeleting, isSnippetDeleting } = useDeletingSnippets();
+	const deleting = isSnippetDeleting(snippetId);
 	const router = useRouter();
 
 	const handleDelete = async () => {
-		setDeleting(true);
+		setSnippetDeleting(snippetId, true);
 		try {
 			await deleteSnippet(snippetId);
 			toast.success(toastMessages.delete.success);
+			setConfirmingDelete(false);
 			router.push('/');
 		} catch (error) {
 			console.error('Failed to delete snippet:', error);
 			toast.error(toastMessages.delete.error);
-		} finally {
-			setDeleting(false);
+			// Reset deleting state immediately on error
+			setSnippetDeleting(snippetId, false);
 			setConfirmingDelete(false);
 		}
 	};
