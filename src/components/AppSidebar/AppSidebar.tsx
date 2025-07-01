@@ -12,7 +12,7 @@ export default async function AppSidebar() {
 			<SidebarContent className='px-4 py-6'>
 				<SidebarMenu className='flex flex-col'>
 					<SidebarMenuItem>
-						<SidebarMenuButton className='bg-action text-center hover:bg-chart-4/85 cursor-pointer mb-8'>
+						<SidebarMenuButton className='bg-action hover:bg-action/85 text-foreground text-center cursor-pointer mb-8 active:bg-action/80'>
 							<Link href='/create-snippet' className='text-md font-bold text-center w-full'>
 								Create Snippet
 							</Link>
