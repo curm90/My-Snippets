@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import ThemeToggle from '@/components/Theme/ThemeToggle';
+import SearchBarWrapper from '@/components/SearchBar/SearchBarWrapper';
 
 export default function Navigation() {
 	return (
@@ -15,14 +15,10 @@ export default function Navigation() {
 			</div>
 			<div className='flex items-center space-x-4 flex-1 justify-end px-6'>
 				<ThemeToggle />
-				<div className='max-w-sm w-full'>
-					<Input className='' type='search' placeholder='Search snippets' />
-				</div>
+				<SearchBarWrapper />
 			</div>
 			<div className='flex items-center space-x-1'>
-				<Button className='cursor-pointer bg-action hover:bg-action/85 text-foreground'>
-					Register
-				</Button>
+				<Button className='cursor-pointer bg-action hover:bg-action/85 text-foreground'>Register</Button>
 				<Button className='cursor-pointer' variant='link'>
 					Sign in
 				</Button>
