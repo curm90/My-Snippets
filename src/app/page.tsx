@@ -15,8 +15,13 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ q
 					],
 			  }
 			: undefined,
+		include: {
+			snippetTags: true,
+		},
 		orderBy: { id: 'desc' },
 	});
+
+	console.log({ snippets });
 
 	return (
 		<section className='py-4 px-6'>

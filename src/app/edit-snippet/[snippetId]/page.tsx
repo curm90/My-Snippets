@@ -8,6 +8,9 @@ export default async function Page({ params }: { params: Promise<{ snippetId: st
 
 	const snippet = await prisma.snippet.findUnique({
 		where: { id: snippetId },
+		include: {
+			snippetTags: true,
+		},
 	});
 
 	if (!snippet) {
@@ -34,6 +37,7 @@ export default async function Page({ params }: { params: Promise<{ snippetId: st
 						language: snippet.language,
 						snippet: snippet.content,
 						folderId: snippet.folderId || '',
+						tags: snippet.snippetTags.map(tag => tag.name),
 					}}
 				/>
 			</div>
