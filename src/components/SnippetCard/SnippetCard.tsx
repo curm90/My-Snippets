@@ -2,6 +2,7 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import SnippetActionButtons from '@/components/SnippetActionButtons/SnippetActionButtons';
+import LanguageBadge from '@/components/LanguageBadge/LanguageBadge';
 
 type SnippetCardProps = {
 	id: string;
@@ -26,9 +27,7 @@ export default function SnippetCard({
 				<div className='flex gap-4 items-center justify-between w-full'>
 					<div className='flex items-center gap-4'>
 						<span>{title}</span>
-						<div className='px-4 py-1 rounded-md bg-chart-1/30 border border-chart-1/50'>
-							<span className='bg-opacity-20'>{language.charAt(0).toUpperCase() + language.slice(1)}</span>
-						</div>
+						<LanguageBadge language={language} />
 					</div>
 					<div className='flex gap-2 pointer-events-auto'>
 						<SnippetActionButtons snippetId={id} content={content} />

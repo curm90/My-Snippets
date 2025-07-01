@@ -1,4 +1,5 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { getLanguageColors } from '@/lib/languageColors';
 
 export default function LanguageSelect({
 	onChange,
@@ -17,11 +18,17 @@ export default function LanguageSelect({
 				<SelectValue placeholder='Select Language' />
 			</SelectTrigger>
 			<SelectContent>
-				{sortedOptions?.map((lang) => (
-					<SelectItem key={lang} value={lang}>
-						{lang.charAt(0).toUpperCase() + lang.slice(1)}
-					</SelectItem>
-				))}
+				{sortedOptions?.map((lang) => {
+					const colors = getLanguageColors(lang);
+					return (
+						<SelectItem key={lang} value={lang}>
+							<div className='flex items-center gap-2'>
+								<div className={`w-3 h-3 rounded-full ${colors.bg} ${colors.border} border`} />
+								{lang.charAt(0).toUpperCase() + lang.slice(1)}
+							</div>
+						</SelectItem>
+					);
+				})}
 			</SelectContent>
 		</Select>
 	);
