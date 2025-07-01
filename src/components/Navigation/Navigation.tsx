@@ -1,12 +1,8 @@
-'use client';
-
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import ThemeToggle from '@/components/Theme/ThemeToggle';
-import SearchBar from '@/components/SearchBar/SearchBar';
-import { Suspense } from 'react';
-import SearchBarSkeleton from '../SearchBar/SearchBarSkeleton';
+import SearchBarWrapper from '@/components/SearchBar/SearchBarWrapper';
 
 export default function Navigation() {
 	return (
@@ -19,9 +15,7 @@ export default function Navigation() {
 			</div>
 			<div className='flex items-center space-x-4 flex-1 justify-end px-6'>
 				<ThemeToggle />
-				<Suspense fallback={<SearchBarSkeleton />}>
-					<SearchBar />
-				</Suspense>
+				<SearchBarWrapper />
 			</div>
 			<div className='flex items-center space-x-1'>
 				<Button className='cursor-pointer bg-action hover:bg-action/85 text-foreground'>Register</Button>
