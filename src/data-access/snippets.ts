@@ -1,7 +1,31 @@
 'use server';
 
 import prisma from '@/lib/prisma';
-import { formSchema } from '@/lib/schemas';
+import { processedFormSchema } from '@/lib/schemas';
+
+async function createTagConnections(tags: string[]) {
+	if (!tags || tags.length === 0) {
+		return [];
+	}
+
+	return await Promise.all(
+		tags.map(async (tagName) => {
+			// Try to find existing tag first
+			let tag = await prisma.tag.findFirst({
+				where: { name: tagName },
+			});
+
+			// If not found, create it
+			if (!tag) {
+				tag = await prisma.tag.create({
+					data: { name: tagName },
+				});
+			}
+
+			return { id: tag.id };
+		}),
+	);
+}
 
 export async function createSnippet(prevState: ActionState | null, data: unknown): Promise<ActionState> {
 	if (!(data instanceof FormData)) {
@@ -10,7 +34,9 @@ export async function createSnippet(prevState: ActionState | null, data: unknown
 
 	try {
 		const formData = Object.fromEntries(data.entries());
-		const validatedData = formSchema.safeParse(formData);
+		console.log({ formData });
+
+		const validatedData = processedFormSchema.safeParse(formData);
 
 		if (!validatedData.success) {
 			return {
@@ -20,7 +46,10 @@ export async function createSnippet(prevState: ActionState | null, data: unknown
 		}
 
 		const snippetData = validatedData.data;
-		const { title, language, snippet, folderId } = snippetData;
+		const { title, language, snippet, folderId, tags } = snippetData;
+
+		// Handle tags - create/connect to existing tags
+		const tagConnections = await createTagConnections(tags || []);
 
 		const createdSnippet = await prisma.snippet.create({
 			data: {
@@ -28,6 +57,9 @@ export async function createSnippet(prevState: ActionState | null, data: unknown
 				language,
 				content: snippet,
 				folderId: folderId || null,
+				snippetTags: {
+					connect: tagConnections,
+				},
 			},
 		});
 
@@ -50,7 +82,7 @@ export async function editSnippet(prevState: ActionState | null, data: unknown):
 	}
 
 	const formData = Object.fromEntries(data.entries());
-	const validatedData = formSchema.safeParse(formData);
+	const validatedData = processedFormSchema.safeParse(formData);
 
 	if (!validatedData.success) {
 		return {
@@ -59,7 +91,7 @@ export async function editSnippet(prevState: ActionState | null, data: unknown):
 		};
 	}
 
-	const { id, title, language, snippet, folderId } = validatedData.data;
+	const { id, title, language, snippet, folderId, tags } = validatedData.data;
 
 	if (!id) {
 		return {
@@ -69,6 +101,9 @@ export async function editSnippet(prevState: ActionState | null, data: unknown):
 	}
 
 	try {
+		// Handle tags - create/connect to existing tags
+		const tagConnections = await createTagConnections(tags || []);
+
 		const updatedSnippet = await prisma.snippet.update({
 			where: { id },
 			data: {
@@ -76,6 +111,12 @@ export async function editSnippet(prevState: ActionState | null, data: unknown):
 				language,
 				content: snippet,
 				folderId: folderId || null,
+				snippetTags: {
+					set: tagConnections, // Replace all existing tags with new ones
+				},
+			},
+			include: {
+				snippetTags: true,
 			},
 		});
 

@@ -5,6 +5,9 @@ export default async function Page({ params }: { params: Promise<{ snippetId: st
 	const { snippetId } = await params;
 	const snippet = await prisma.snippet.findUnique({
 		where: { id: snippetId },
+		include: {
+			snippetTags: true,
+		},
 	});
 
 	if (!snippet) {

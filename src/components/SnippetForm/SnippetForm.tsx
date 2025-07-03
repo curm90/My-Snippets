@@ -15,6 +15,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import LanguageSelect from '@/components/LanguageSelect/LanguageSelect';
 import FolderSelect from '@/components/FolderSelect/FolderSelect';
+import TagInput from '@/components/TagInput/TagInput';
 import { FormDataType, formSchema } from '@/lib/schemas';
 import { toastMessages } from '@/constants/toastMessages';
 
@@ -26,12 +27,17 @@ export default function SnippetForm({ action, folders, defaultValues, actionId =
 	const form = useForm<FormDataType>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			id: '',
-			title: '',
-			language: '',
-			snippet: '',
-			folderId: '',
-			...defaultValues,
+			id: defaultValues?.id || '',
+			title: defaultValues?.title || '',
+			language: defaultValues?.language || '',
+			snippet: defaultValues?.snippet || '',
+			folderId: defaultValues?.folderId || '',
+			// Convert array of tags to comma-separated string for form display
+			tags: defaultValues?.tags
+				? Array.isArray(defaultValues.tags)
+					? defaultValues.tags.join(', ')
+					: defaultValues.tags
+				: '',
 		},
 	});
 
@@ -71,7 +77,7 @@ export default function SnippetForm({ action, folders, defaultValues, actionId =
 							<FormItem>
 								<FormLabel className='font-semibold'>Language</FormLabel>
 								<FormControl>
-									<LanguageSelect onChange={field.onChange} value={field.value} options={langNames} />
+									<LanguageSelect options={langNames} {...field} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -86,13 +92,7 @@ export default function SnippetForm({ action, folders, defaultValues, actionId =
 							<FormItem>
 								<FormLabel className='font-semibold'>Snippet id</FormLabel>
 								<FormControl>
-									<Input
-										placeholder='Id'
-										readOnly
-										{...field}
-										value={field.value}
-										className='pointer-events-none text-gray-500'
-									/>
+									<Input placeholder='Id' readOnly className='pointer-events-none text-gray-500' {...field} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -132,7 +132,32 @@ export default function SnippetForm({ action, folders, defaultValues, actionId =
 						<FormItem>
 							<FormLabel className='font-semibold'>Folder</FormLabel>
 							<FormControl>
-								<FolderSelect onChange={field.onChange} value={field.value} folders={folders} />
+								<FolderSelect {...field} folders={folders} />
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+				<FormField
+					control={form.control}
+					name='tags'
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel className='font-semibold'>Tags</FormLabel>
+							<FormControl>
+								<div>
+									<TagInput
+										value={field.value || ''}
+										onChange={field.onChange}
+										placeholder='Enter tags separated by commas (e.g., react, javascript, hooks)'
+									/>
+									<input
+										name='tags'
+										value={field.value || ''}
+										onChange={(e) => field.onChange(e.target.value)}
+										className='hidden'
+									/>
+								</div>
 							</FormControl>
 							<FormMessage />
 						</FormItem>

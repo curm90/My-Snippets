@@ -9,14 +9,15 @@ datasource db {
 }
 
 model Snippet {
-  id        String   @id @default(cuid())
-  title     String
-  language  String
-  content   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  folderId  String?
-  folder    Folder?  @relation(fields: [folderId], references: [id])
+  id          String   @id @default(cuid())
+  title       String
+  language    String
+  content     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  folderId    String?
+  folder      Folder?  @relation(fields: [folderId], references: [id])
+  snippetTags Tag[]    @relation("SnippetTags")
 
   @@index([title])
   @@index([folderId])
@@ -32,4 +33,15 @@ model Folder {
 
   @@index([name])
   @@map("folders")
+}
+
+model Tag {
+  id        String    @id @default(cuid())
+  name      String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  snippets  Snippet[] @relation("SnippetTags")
+
+  @@index([name])
+  @@map("tags")
 }

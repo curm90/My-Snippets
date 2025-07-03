@@ -5,6 +5,9 @@ export default async function Page({ params }: { params: Promise<{ folderId: str
 	const { folderId } = await params;
 	const snippets = await prisma.snippet.findMany({
 		where: { folderId },
+		include: {
+			snippetTags: true,
+		},
 	});
 
 	return (

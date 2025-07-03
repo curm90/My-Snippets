@@ -15,6 +15,9 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ q
 					],
 			  }
 			: undefined,
+		include: {
+			snippetTags: true,
+		},
 		orderBy: { id: 'desc' },
 	});
 
