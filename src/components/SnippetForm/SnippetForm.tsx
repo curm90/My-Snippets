@@ -145,7 +145,7 @@ export default function SnippetForm({ action, folders, defaultValues, actionId =
 						<FormItem>
 							<FormLabel className='font-semibold'>Tags</FormLabel>
 							<FormControl>
-								<>
+								<div>
 									<TagInput
 										value={field.value || ''}
 										onChange={field.onChange}
@@ -157,7 +157,7 @@ export default function SnippetForm({ action, folders, defaultValues, actionId =
 										onChange={(e) => field.onChange(e.target.value)}
 										className='hidden'
 									/>
-								</>
+								</div>
 							</FormControl>
 							<FormMessage />
 						</FormItem>

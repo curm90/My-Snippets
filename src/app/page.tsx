@@ -21,8 +21,6 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ q
 		orderBy: { id: 'desc' },
 	});
 
-	console.log({ snippets });
-
 	return (
 		<section className='py-4 px-6'>
 			<div className='mb-4'>
