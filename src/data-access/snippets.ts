@@ -3,9 +3,31 @@
 import prisma from '@/lib/prisma';
 import { processedFormSchema } from '@/lib/schemas';
 
-export async function createSnippet(prevState: ActionState | null, data: unknown): Promise<ActionState> {
-	console.log({ data });
+async function createTagConnections(tags: string[]) {
+	if (!tags || tags.length === 0) {
+		return [];
+	}
 
+	return await Promise.all(
+		tags.map(async (tagName) => {
+			// Try to find existing tag first
+			let tag = await prisma.tag.findFirst({
+				where: { name: tagName },
+			});
+
+			// If not found, create it
+			if (!tag) {
+				tag = await prisma.tag.create({
+					data: { name: tagName },
+				});
+			}
+
+			return { id: tag.id };
+		}),
+	);
+}
+
+export async function createSnippet(prevState: ActionState | null, data: unknown): Promise<ActionState> {
 	if (!(data instanceof FormData)) {
 		throw new Error('Invalid data format. Expected FormData.');
 	}
@@ -24,30 +46,10 @@ export async function createSnippet(prevState: ActionState | null, data: unknown
 		}
 
 		const snippetData = validatedData.data;
-		console.log({ snippetData, formData, validatedData });
 		const { title, language, snippet, folderId, tags } = snippetData;
 
 		// Handle tags - create/connect to existing tags
-		const tagConnections =
-			tags && tags.length > 0
-				? await Promise.all(
-						tags.map(async (tagName) => {
-							// Try to find existing tag first
-							let tag = await prisma.tag.findFirst({
-								where: { name: tagName },
-							});
-
-							// If not found, create it
-							if (!tag) {
-								tag = await prisma.tag.create({
-									data: { name: tagName },
-								});
-							}
-
-							return { id: tag.id };
-						}),
-				  )
-				: [];
+		const tagConnections = await createTagConnections(tags || []);
 
 		const createdSnippet = await prisma.snippet.create({
 			data: {
@@ -100,26 +102,7 @@ export async function editSnippet(prevState: ActionState | null, data: unknown):
 
 	try {
 		// Handle tags - create/connect to existing tags
-		const tagConnections =
-			tags && tags.length > 0
-				? await Promise.all(
-						tags.map(async (tagName) => {
-							// Try to find existing tag first
-							let tag = await prisma.tag.findFirst({
-								where: { name: tagName },
-							});
-
-							// If not found, create it
-							if (!tag) {
-								tag = await prisma.tag.create({
-									data: { name: tagName },
-								});
-							}
-
-							return { id: tag.id };
-						}),
-				  )
-				: [];
+		const tagConnections = await createTagConnections(tags || []);
 
 		const updatedSnippet = await prisma.snippet.update({
 			where: { id },
