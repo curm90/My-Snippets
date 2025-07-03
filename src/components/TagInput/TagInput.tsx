@@ -2,7 +2,6 @@
 
 import { useState, useRef, KeyboardEvent } from 'react';
 import { X } from 'lucide-react';
-import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 
 type TagInputProps = {
@@ -66,7 +65,7 @@ export default function TagInput({ value, onChange, placeholder, className }: Ta
 
 	return (
 		<div className={cn('min-h-10 w-full', className)}>
-			<div className='flex flex-wrap gap-2 border border-input rounded-md py-1 px-3 shadow-xs transition-[color,box-shadow] focus-within:border-ring focus-within:ring-ring/50 focus-within:ring-[3px]'>
+			<div className='file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input flex min-h-9 w-full rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-within:border-ring focus-within:ring-ring/50 focus-within:ring-[3px] flex-wrap gap-2'>
 				{tags.map((tag, index) => (
 					<div
 						key={index}
@@ -82,13 +81,14 @@ export default function TagInput({ value, onChange, placeholder, className }: Ta
 						</button>
 					</div>
 				))}
-				<Input
+				<input
 					ref={inputRef}
+					type='text'
 					value={inputValue}
 					onChange={handleInputChange}
 					onKeyDown={handleKeyDown}
 					placeholder={tags.length === 0 ? placeholder : 'Add another tag...'}
-					className='flex-1 min-w-[120px] border-0 focus-visible:ring-0 focus-visible:ring-offset-0 px-3 h-auto'
+					className='flex-1 min-w-[120px] border-0 bg-transparent outline-none placeholder:text-muted-foreground'
 				/>
 			</div>
 		</div>
