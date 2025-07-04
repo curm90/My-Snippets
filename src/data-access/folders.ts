@@ -50,3 +50,35 @@ export async function deleteFolder(folderId: string): Promise<void> {
 		throw new Error('Failed to delete folder');
 	}
 }
+
+export async function updateFolder(folderId: string, name: string): Promise<Folder> {
+	try {
+		if (!folderId) {
+			throw new Error('Folder ID is required');
+		}
+
+		const validatedData = folderSchema.safeParse({ name });
+
+		if (!validatedData.success) {
+			console.log('Validation failed:', validatedData.error);
+			throw new Error('Invalid folder data');
+		}
+
+		const { name: validatedName } = validatedData.data;
+
+		if (!validatedName || validatedName.length < 1 || validatedName.length > 50) {
+			throw new Error('Folder name must be between 1 and 50 characters');
+		}
+
+		const updatedFolder = await prisma.folder.update({
+			where: { id: folderId },
+			data: { name: validatedName },
+		});
+
+		revalidatePath('/');
+		return updatedFolder;
+	} catch (error) {
+		console.log('Error updating folder:', error);
+		throw new Error('Failed to update folder');
+	}
+}
