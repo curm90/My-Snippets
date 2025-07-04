@@ -11,6 +11,7 @@ type SnippetCardProps = {
 	content: string;
 	showFullContent?: boolean;
 	blurContent?: boolean;
+	totalSnippetsInFolder?: number;
 };
 
 export default function SnippetCard({
@@ -20,6 +21,7 @@ export default function SnippetCard({
 	content,
 	showFullContent = false,
 	blurContent = false,
+	totalSnippetsInFolder,
 }: SnippetCardProps) {
 	return (
 		<Card className='mt-8 p-0 bg-secondary group'>
@@ -30,7 +32,7 @@ export default function SnippetCard({
 						<LanguageBadge language={language} />
 					</div>
 					<div className='flex gap-2 pointer-events-auto'>
-						<SnippetActionButtons snippetId={id} content={content} />
+						<SnippetActionButtons snippetId={id} content={content} totalSnippetsInFolder={totalSnippetsInFolder} />
 					</div>
 				</div>
 			</CardHeader>

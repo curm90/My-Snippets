@@ -12,7 +12,7 @@ import {
 import { deleteFolder } from '@/data-access/folders';
 import { useDeletingFolders } from '@/contexts/DeletingFoldersContext';
 
-export default function DeleteFolderDropdown({ folderId }: { folderId: string }) {
+export default function DeleteFolderDropdown({ folderId, onRename }: { folderId: string; onRename: () => void }) {
 	const { setFolderDeleting } = useDeletingFolders();
 
 	async function handleDelete() {
@@ -34,7 +34,7 @@ export default function DeleteFolderDropdown({ folderId }: { folderId: string })
 				<Cog size='16' />
 			</DropdownMenuTrigger>
 			<DropdownMenuContent>
-				<DropdownMenuItem>Rename</DropdownMenuItem>
+				<DropdownMenuItem onClick={onRename}>Rename</DropdownMenuItem>
 				<DropdownMenuItem onClick={handleDelete}>Delete</DropdownMenuItem>
 			</DropdownMenuContent>
 		</DropdownMenu>

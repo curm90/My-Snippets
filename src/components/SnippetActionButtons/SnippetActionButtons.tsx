@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { Clipboard, SquarePen, Trash2, Check, X, LoaderCircle } from 'lucide-react';
 import { toast } from 'sonner';
@@ -10,11 +10,20 @@ import { CopyButton } from '@/components/CopyToClipboardButton/CopyToClipboardBu
 import { toastMessages } from '@/constants/toastMessages';
 import { useDeletingSnippets } from '@/contexts/DeletingSnippetsContext';
 
-export default function SnippetActionButtons({ snippetId, content }: { snippetId: string; content: string }) {
+export default function SnippetActionButtons({
+	snippetId,
+	content,
+	totalSnippetsInFolder,
+}: {
+	snippetId: string;
+	content: string;
+	totalSnippetsInFolder?: number;
+}) {
 	const [confirmingDelete, setConfirmingDelete] = useState(false);
 	const { setSnippetDeleting, isSnippetDeleting } = useDeletingSnippets();
 	const deleting = isSnippetDeleting(snippetId);
 	const router = useRouter();
+	const pathname = usePathname();
 
 	const handleDelete = async () => {
 		setSnippetDeleting(snippetId, true);
@@ -22,7 +31,21 @@ export default function SnippetActionButtons({ snippetId, content }: { snippetId
 			await deleteSnippet(snippetId);
 			toast.success(toastMessages.delete.success);
 			setConfirmingDelete(false);
-			router.push('/');
+
+			// Smart navigation logic based on current location and remaining snippets
+			const isOnFolderPage = pathname.startsWith('/folder/');
+			const isLastSnippetInFolder = totalSnippetsInFolder === 1;
+
+			if (isOnFolderPage && !isLastSnippetInFolder) {
+				// Stay on folder page if there are more snippets
+				// The snippet will be filtered out by the deleting context
+				console.log('Staying on folder page - more snippets remain');
+			} else {
+				// Navigate to home if:
+				// - On folder page but it's the last snippet
+				// - On any other page (snippet detail, etc.)
+				router.push('/');
+			}
 		} catch (error) {
 			console.error('Failed to delete snippet:', error);
 			toast.error(toastMessages.delete.error);
