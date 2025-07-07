@@ -3,9 +3,20 @@
 import prisma from '@/lib/prisma';
 import { folderSchema } from '@/lib/schemas';
 import { revalidatePath } from 'next/cache';
+import { getCurrentUser } from '@/lib/session';
+
+export async function getFoldersForCurrentUser() {
+	const user = await getCurrentUser();
+
+	return await prisma.folder.findMany({
+		where: { userId: user.id },
+		orderBy: { createdAt: 'desc' },
+	});
+}
 
 export async function createFolder(formData: unknown): Promise<Folder> {
 	try {
+		const user = await getCurrentUser();
 		const validatedData = folderSchema.safeParse(formData);
 
 		if (!validatedData.success) {
@@ -22,6 +33,7 @@ export async function createFolder(formData: unknown): Promise<Folder> {
 		const createdFolder = await prisma.folder.create({
 			data: {
 				name,
+				userId: user.id,
 			},
 		});
 
@@ -35,12 +47,17 @@ export async function createFolder(formData: unknown): Promise<Folder> {
 
 export async function deleteFolder(folderId: string): Promise<void> {
 	try {
+		const user = await getCurrentUser();
+
 		if (!folderId) {
 			throw new Error('Folder ID is required');
 		}
 
 		await prisma.folder.delete({
-			where: { id: folderId },
+			where: {
+				id: folderId,
+				userId: user.id, // Only allow deleting own folders
+			},
 		});
 
 		console.log(`Folder with ID ${folderId} deleted successfully`);
@@ -53,6 +70,8 @@ export async function deleteFolder(folderId: string): Promise<void> {
 
 export async function updateFolder(folderId: string, name: string): Promise<Folder> {
 	try {
+		const user = await getCurrentUser();
+
 		if (!folderId) {
 			throw new Error('Folder ID is required');
 		}
@@ -71,7 +90,10 @@ export async function updateFolder(folderId: string, name: string): Promise<Fold
 		}
 
 		const updatedFolder = await prisma.folder.update({
-			where: { id: folderId },
+			where: {
+				id: folderId,
+				userId: user.id, // Only allow updating own folders
+			},
 			data: { name: validatedName },
 		});
 
