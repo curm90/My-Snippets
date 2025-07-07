@@ -8,6 +8,7 @@ import prisma from '@/lib/prisma';
 
 export const authOptions: NextAuthOptions = {
 	adapter: PrismaAdapter(prisma),
+	secret: process.env.NEXTAUTH_SECRET,
 	providers: [
 		// GoogleProvider({
 		//   clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -51,10 +52,12 @@ export const authOptions: NextAuthOptions = {
 	],
 	session: {
 		strategy: 'jwt',
+		maxAge: 30 * 24 * 60 * 60, // 30 days
 	},
 	pages: {
 		signIn: '/auth/signin',
 	},
+	debug: process.env.NODE_ENV === 'development',
 	callbacks: {
 		async jwt({ token, user }) {
 			if (user) {
