@@ -1,6 +1,7 @@
 import { NextAuthOptions } from 'next-auth';
+import { getServerSession } from 'next-auth/next';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import GoogleProvider from 'next-auth/providers/google';
+// import GoogleProvider from 'next-auth/providers/google';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
 import prisma from '@/lib/prisma';
@@ -69,3 +70,5 @@ export const authOptions: NextAuthOptions = {
 		},
 	},
 };
+
+export const auth = () => getServerSession(authOptions);
