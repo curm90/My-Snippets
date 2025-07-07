@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
 import ThemeToggle from '@/components/Theme/ThemeToggle';
+import { AuthButton } from '@/components/AuthButton/AuthButton';
 import SearchBarWrapper from '@/components/SearchBar/SearchBarWrapper';
 
 export default function Navigation() {
@@ -18,10 +18,7 @@ export default function Navigation() {
 				<SearchBarWrapper />
 			</div>
 			<div className='flex items-center space-x-1'>
-				<Button className='cursor-pointer bg-action hover:bg-action/85 text-foreground'>Register</Button>
-				<Button className='cursor-pointer' variant='link'>
-					Sign in
-				</Button>
+				<AuthButton />
 			</div>
 		</nav>
 	);

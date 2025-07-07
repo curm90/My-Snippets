@@ -1,11 +1,19 @@
 import Link from 'next/link';
-import { Sidebar, SidebarContent, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
+import {
+	Sidebar,
+	SidebarContent,
+	SidebarFooter,
+	SidebarMenu,
+	SidebarMenuButton,
+	SidebarMenuItem,
+} from '@/components/ui/sidebar';
 import FolderList from '@/components/FolderLIst/FolderList';
 import CreateFolderForm from '@/components/CreateFolderForm/CreateFolderForm';
-import prisma from '@/lib/prisma';
+import { UserDropdown } from '@/components/UserDropdown/UserDropdown';
+import { getFoldersForCurrentUser } from '@/data-access/folders';
 
 export default async function AppSidebar() {
-	const folders = await prisma.folder.findMany();
+	const folders = await getFoldersForCurrentUser();
 
 	return (
 		<Sidebar className='h-[calc(100vh-var(--navbar-height))] border-r-4 border-r-secondary'>
@@ -24,6 +32,11 @@ export default async function AppSidebar() {
 					<FolderList folders={folders} />
 				</SidebarMenu>
 			</SidebarContent>
+			<SidebarFooter className='px-4 py-4 border-t'>
+				<div className='flex items-center justify-center'>
+					<UserDropdown />
+				</div>
+			</SidebarFooter>
 		</Sidebar>
 	);
 }

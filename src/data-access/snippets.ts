@@ -2,6 +2,7 @@
 
 import prisma from '@/lib/prisma';
 import { processedFormSchema } from '@/lib/schemas';
+import { getCurrentUser } from '@/lib/session';
 
 async function createTagConnections(tags: string[]) {
 	if (!tags || tags.length === 0) {
@@ -27,12 +28,54 @@ async function createTagConnections(tags: string[]) {
 	);
 }
 
+export async function getSnippetsForCurrentUser(searchQuery?: string) {
+	const user = await getCurrentUser();
+
+	return await prisma.snippet.findMany({
+		where: {
+			userId: user.id,
+			...(searchQuery && {
+				OR: [
+					{ title: { contains: searchQuery, mode: 'insensitive' } },
+					{ content: { contains: searchQuery, mode: 'insensitive' } },
+					{ language: { contains: searchQuery, mode: 'insensitive' } },
+				],
+			}),
+		},
+		include: {
+			snippetTags: true,
+		},
+		orderBy: { id: 'desc' },
+	});
+}
+
+export async function getSnippetById(snippetId: string): Promise<Snippet | null> {
+	if (!snippetId) {
+		throw new Error('Snippet ID is required');
+	}
+
+	try {
+		const snippet = await prisma.snippet.findUnique({
+			where: { id: snippetId },
+			include: {
+				snippetTags: true,
+			},
+		});
+
+		return snippet;
+	} catch (error) {
+		console.error('Error fetching snippet by ID:', error);
+		throw new Error('Failed to fetch snippet');
+	}
+}
+
 export async function createSnippet(prevState: ActionState | null, data: unknown): Promise<ActionState> {
 	if (!(data instanceof FormData)) {
 		throw new Error('Invalid data format. Expected FormData.');
 	}
 
 	try {
+		const user = await getCurrentUser();
 		const formData = Object.fromEntries(data.entries());
 		console.log({ formData });
 
@@ -57,6 +100,7 @@ export async function createSnippet(prevState: ActionState | null, data: unknown
 				language,
 				content: snippet,
 				folderId: folderId || null,
+				userId: user.id,
 				snippetTags: {
 					connect: tagConnections,
 				},
@@ -81,6 +125,7 @@ export async function editSnippet(prevState: ActionState | null, data: unknown):
 		throw new Error('Invalid data format. Expected FormData.');
 	}
 
+	const user = await getCurrentUser();
 	const formData = Object.fromEntries(data.entries());
 	const validatedData = processedFormSchema.safeParse(formData);
 
@@ -105,7 +150,10 @@ export async function editSnippet(prevState: ActionState | null, data: unknown):
 		const tagConnections = await createTagConnections(tags || []);
 
 		const updatedSnippet = await prisma.snippet.update({
-			where: { id },
+			where: {
+				id,
+				userId: user.id, // Only allow updating own snippets
+			},
 			data: {
 				title,
 				language,
@@ -135,7 +183,7 @@ export async function editSnippet(prevState: ActionState | null, data: unknown):
 	} catch (error) {
 		console.error('Unexpected error:', error);
 		return {
-			errors: { server: ['Failed to create snippet'] },
+			errors: { server: ['Failed to update snippet'] },
 			success: false,
 		};
 	}
@@ -146,9 +194,14 @@ export async function deleteSnippet(snippetId: string) {
 		throw new Error('Snippet ID is required');
 	}
 
+	const user = await getCurrentUser();
+
 	try {
 		const deletedSnippet = await prisma.snippet.delete({
-			where: { id: snippetId },
+			where: {
+				id: snippetId,
+				userId: user.id, // Only allow deleting own snippets
+			},
 		});
 
 		return { id: deletedSnippet.id };
