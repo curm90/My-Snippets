@@ -1,30 +1,16 @@
 import SnippetListWrapper from '@/components/SnippetListWrapper/SnippetListWrapper';
-import prisma from '@/lib/prisma';
+import { getSnippetsForCurrentUser } from '@/data-access/snippets';
+import { getCurrentUser } from '@/lib/session';
 
 export default async function Home({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
+	const user = await getCurrentUser();
 	const { q: searchQuery } = await searchParams;
-
-	// Build the database query based on search parameters
-	const snippets = await prisma.snippet.findMany({
-		where: searchQuery
-			? {
-					OR: [
-						{ title: { contains: searchQuery, mode: 'insensitive' } },
-						{ content: { contains: searchQuery, mode: 'insensitive' } },
-						{ language: { contains: searchQuery, mode: 'insensitive' } },
-					],
-			  }
-			: undefined,
-		include: {
-			snippetTags: true,
-		},
-		orderBy: { id: 'desc' },
-	});
+	const snippets = await getSnippetsForCurrentUser(searchQuery);
 
 	return (
 		<section className='py-4 px-6'>
 			<div className='mb-4'>
-				<h1 className='text-3xl'>Welcome Liam!</h1>
+				<h1 className='text-3xl'>Welcome {user.name || user.email}!</h1>
 				{searchQuery && (
 					<p className='text-muted-foreground mt-2'>
 						{snippets.length > 0
