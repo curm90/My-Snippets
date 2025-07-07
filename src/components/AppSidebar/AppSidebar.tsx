@@ -2,10 +2,10 @@ import Link from 'next/link';
 import { Sidebar, SidebarContent, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import FolderList from '@/components/FolderLIst/FolderList';
 import CreateFolderForm from '@/components/CreateFolderForm/CreateFolderForm';
-import prisma from '@/lib/prisma';
+import { getFoldersForCurrentUser } from '@/data-access/folders';
 
 export default async function AppSidebar() {
-	const folders = await prisma.folder.findMany();
+	const folders = await getFoldersForCurrentUser();
 
 	return (
 		<Sidebar className='h-[calc(100vh-var(--navbar-height))] border-r-4 border-r-secondary'>
