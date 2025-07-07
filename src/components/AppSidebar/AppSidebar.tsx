@@ -1,7 +1,15 @@
 import Link from 'next/link';
-import { Sidebar, SidebarContent, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
+import {
+	Sidebar,
+	SidebarContent,
+	SidebarFooter,
+	SidebarMenu,
+	SidebarMenuButton,
+	SidebarMenuItem,
+} from '@/components/ui/sidebar';
 import FolderList from '@/components/FolderLIst/FolderList';
 import CreateFolderForm from '@/components/CreateFolderForm/CreateFolderForm';
+import { UserDropdown } from '@/components/UserDropdown/UserDropdown';
 import { getFoldersForCurrentUser } from '@/data-access/folders';
 
 export default async function AppSidebar() {
@@ -24,6 +32,11 @@ export default async function AppSidebar() {
 					<FolderList folders={folders} />
 				</SidebarMenu>
 			</SidebarContent>
+			<SidebarFooter className='px-4 py-4 border-t'>
+				<div className='flex items-center justify-center'>
+					<UserDropdown />
+				</div>
+			</SidebarFooter>
 		</Sidebar>
 	);
 }
