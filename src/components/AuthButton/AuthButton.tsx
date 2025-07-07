@@ -1,8 +1,9 @@
 'use client';
 
-import { signIn, signOut, useSession } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
-import { LogIn, LogOut, User } from 'lucide-react';
+import { UserDropdown } from '@/components/UserDropdown/UserDropdown';
+import { LogIn } from 'lucide-react';
 
 export function AuthButton() {
 	const { data: session, status } = useSession();
@@ -16,22 +17,11 @@ export function AuthButton() {
 	}
 
 	if (session) {
-		return (
-			<div className='flex items-center gap-2'>
-				<span className='text-sm text-muted-foreground flex items-center gap-1'>
-					<User className='h-4 w-4' />
-					{session.user?.name || session.user?.email}
-				</span>
-				<Button variant='ghost' size='sm' onClick={() => signOut()} className='flex items-center gap-1'>
-					<LogOut className='h-4 w-4' />
-					Sign Out
-				</Button>
-			</div>
-		);
+		return <UserDropdown />;
 	}
 
 	return (
-		<Button variant='ghost' size='sm' onClick={() => signIn()} className='flex items-center gap-1'>
+		<Button onClick={() => signIn()} className='bg-action hover:bg-action/85 text-foreground flex items-center gap-2'>
 			<LogIn className='h-4 w-4' />
 			Sign In
 		</Button>
