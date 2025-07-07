@@ -49,6 +49,26 @@ export async function getSnippetsForCurrentUser(searchQuery?: string) {
 	});
 }
 
+export async function getSnippetById(snippetId: string): Promise<Snippet | null> {
+	if (!snippetId) {
+		throw new Error('Snippet ID is required');
+	}
+
+	try {
+		const snippet = await prisma.snippet.findUnique({
+			where: { id: snippetId },
+			include: {
+				snippetTags: true,
+			},
+		});
+
+		return snippet;
+	} catch (error) {
+		console.error('Error fetching snippet by ID:', error);
+		throw new Error('Failed to fetch snippet');
+	}
+}
+
 export async function createSnippet(prevState: ActionState | null, data: unknown): Promise<ActionState> {
 	if (!(data instanceof FormData)) {
 		throw new Error('Invalid data format. Expected FormData.');
