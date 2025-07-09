@@ -77,7 +77,6 @@ export async function createSnippet(prevState: ActionState | null, data: unknown
 	try {
 		const user = await getCurrentUser();
 		const formData = Object.fromEntries(data.entries());
-		console.log({ formData });
 
 		const validatedData = processedFormSchema.safeParse(formData);
 
@@ -175,7 +174,6 @@ export async function editSnippet(prevState: ActionState | null, data: unknown):
 			};
 		}
 
-		console.log('Snippet updated successfully:', updatedSnippet);
 		return {
 			id: updatedSnippet.id,
 			success: true,
