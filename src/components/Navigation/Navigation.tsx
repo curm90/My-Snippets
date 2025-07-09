@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import ThemeToggle from '@/components/Theme/ThemeToggle';
+// import ThemeToggle from '@/components/Theme/ThemeToggle';
 import { AuthButton } from '@/components/AuthButton/AuthButton';
 import SearchBarWrapper from '@/components/SearchBar/SearchBarWrapper';
 
@@ -14,7 +14,7 @@ export default function Navigation() {
 				<Link href='/'>Dashboard</Link>
 			</div>
 			<div className='flex items-center space-x-4 flex-1 justify-end px-6'>
-				<ThemeToggle />
+				{/* <ThemeToggle /> */}
 				<SearchBarWrapper />
 			</div>
 			<div className='flex items-center space-x-1'>

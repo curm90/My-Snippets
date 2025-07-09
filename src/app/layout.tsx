@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { Toaster } from '@/components/ui/sonner';
-import { ThemeProvider } from '@/components/Theme/ThemeProvider';
+// import { ThemeProvider } from '@/components/Theme/ThemeProvider';
 import { AuthProvider } from '@/components/AuthProvider/AuthProvider';
 import './globals.css';
 
@@ -29,9 +29,9 @@ export default function RootLayout({
 		<html lang='en' suppressHydrationWarning>
 			<body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
 				<AuthProvider>
-					<ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
-						{children}
-					</ThemeProvider>
+					{/* <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange> */}
+					{children}
+					{/* </ThemeProvider> */}
 				</AuthProvider>
 				<Toaster />
 			</body>
