@@ -1,13 +1,19 @@
 import SnippetForm from '@/components/SnippetForm/SnippetForm';
 import { editSnippet } from '@/data-access/snippets';
+import { getFoldersForCurrentUser } from '@/data-access/folders';
+import { getCurrentUser } from '@/lib/session';
 import prisma from '@/lib/prisma';
 
 export default async function Page({ params }: { params: Promise<{ snippetId: string }> }) {
 	const { snippetId } = await params;
-	const folders = await prisma.folder.findMany();
+	const user = await getCurrentUser();
+	const folders = await getFoldersForCurrentUser();
 
 	const snippet = await prisma.snippet.findUnique({
-		where: { id: snippetId },
+		where: {
+			id: snippetId,
+			userId: user.id, // Only allow editing own snippets
+		},
 		include: {
 			snippetTags: true,
 		},
@@ -36,7 +42,7 @@ export default async function Page({ params }: { params: Promise<{ snippetId: st
 						title: snippet.title,
 						language: snippet.language,
 						snippet: snippet.content,
-						folderId: snippet.folderId || '',
+						folderId: snippet.folderId || 'none',
 						tags: snippet.snippetTags.map((tag) => tag.name),
 					}}
 				/>

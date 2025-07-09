@@ -4,9 +4,10 @@ export default function FolderSelect({ onChange, value, folders }: FolderSelectP
 	return (
 		<Select name='folderId' onValueChange={onChange} value={value} defaultValue={value}>
 			<SelectTrigger className='w-full'>
-				<SelectValue placeholder='Folder' />
+				<SelectValue placeholder='Select a folder (optional)' />
 			</SelectTrigger>
 			<SelectContent>
+				<SelectItem value='none'>No folder</SelectItem>
 				{folders.map((folder) => (
 					<SelectItem key={folder.id} value={folder.id}>
 						{folder.name}

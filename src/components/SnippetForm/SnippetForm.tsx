@@ -31,7 +31,7 @@ export default function SnippetForm({ action, folders, defaultValues, actionId =
 			title: defaultValues?.title || '',
 			language: defaultValues?.language || '',
 			snippet: defaultValues?.snippet || '',
-			folderId: defaultValues?.folderId || '',
+			folderId: defaultValues?.folderId || 'none',
 			// Convert array of tags to comma-separated string for form display
 			tags: defaultValues?.tags
 				? Array.isArray(defaultValues.tags)

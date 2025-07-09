@@ -10,9 +10,10 @@ export const formSchema = z.object({
 	tags: z.string().optional(),
 });
 
-// Processing schema that transforms tags string to array
+// Processing schema that transforms tags string to array and handles empty folderId
 export const processedFormSchema = formSchema.transform((data) => ({
 	...data,
+	folderId: data.folderId && data.folderId.trim() !== '' && data.folderId !== 'none' ? data.folderId : null,
 	tags: data.tags
 		? data.tags
 				.split(',')
