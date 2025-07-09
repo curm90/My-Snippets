@@ -1,30 +1,30 @@
 'use client';
 
-import { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { toast } from 'sonner';
+import bcrypt from 'bcryptjs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { toast } from 'sonner';
-import bcrypt from 'bcryptjs';
 
 export default function SignInPage() {
 	const [isLoading, setIsLoading] = useState(false);
 	const [isSignUp, setIsSignUp] = useState(false);
 	const router = useRouter();
 
-	const handleGoogleSignIn = async () => {
-		setIsLoading(true);
-		try {
-			await signIn('google', { callbackUrl: '/' });
-		} catch {
-			toast.error('Failed to sign in with Google');
-		} finally {
-			setIsLoading(false);
-		}
-	};
+	// const handleGoogleSignIn = async () => {
+	// 	setIsLoading(true);
+	// 	try {
+	// 		await signIn('google', { callbackUrl: '/' });
+	// 	} catch {
+	// 		toast.error('Failed to sign in with Google');
+	// 	} finally {
+	// 		setIsLoading(false);
+	// 	}
+	// };
 
 	const handleCredentialsAuth = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -90,18 +90,18 @@ export default function SignInPage() {
 					</CardDescription>
 				</CardHeader>
 				<CardContent className='space-y-4'>
-					<Button type='button' variant='outline' className='w-full' onClick={handleGoogleSignIn} disabled={isLoading}>
+					{/* <Button type='button' variant='outline' className='w-full' onClick={handleGoogleSignIn} disabled={isLoading}>
 						Continue with Google
-					</Button>
+					</Button> */}
 
-					<div className='relative'>
+					{/* <div className='relative'>
 						<div className='absolute inset-0 flex items-center'>
 							<span className='w-full border-t' />
 						</div>
 						<div className='relative flex justify-center text-xs uppercase'>
 							<span className='bg-background px-2 text-muted-foreground'>Or</span>
 						</div>
-					</div>
+					</div> */}
 
 					<form onSubmit={handleCredentialsAuth} className='space-y-4'>
 						{isSignUp && (
