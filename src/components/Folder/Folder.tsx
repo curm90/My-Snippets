@@ -6,11 +6,13 @@ import { SidebarMenuItem } from '@/components/ui/sidebar';
 import { Loader2, Check, X } from 'lucide-react';
 import DeleteFolderDropdown from '@/components/DeleteFolderDropdown/DeleteFolderDropdown';
 import { useDeletingFolders } from '@/contexts/DeletingFoldersContext';
+import { useCloseSidebarOnNav } from '@/components/SidebarNavWrapper/SidebarNavWrapper';
 import { updateFolder } from '@/data-access/folders';
 import { toast } from 'sonner';
 
 export default function Folder({ folder }: { folder: Folder }) {
 	const { isFolderDeleting } = useDeletingFolders();
+	const closeSidebarOnNav = useCloseSidebarOnNav();
 	const isDeleting = isFolderDeleting(folder.id);
 	const [isEditing, setIsEditing] = useState(false);
 	const [editingName, setEditingName] = useState(folder.name);
@@ -94,7 +96,11 @@ export default function Folder({ folder }: { folder: Folder }) {
 					</div>
 				</div>
 			) : (
-				<Link href={`/folder/${folder.id}`} className='w-full flex justify-between py-2 px-0 cursor-pointer'>
+				<Link
+					href={`/folder/${folder.id}`}
+					className='w-full flex justify-between py-2 px-0 cursor-pointer'
+					onClick={closeSidebarOnNav}
+				>
 					<div className='flex items-center gap-2 w-full'>
 						<div className='w-8 h-8 bg-accent flex justify-center items-center rounded-md'>
 							{isDeleting ? <Loader2 className='h-4 w-4 animate-spin' /> : folder.name?.[0] || 'F'}
