@@ -1,9 +1,11 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneDark, oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { useTheme } from 'next-themes';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 import SnippetActionButtons from '@/components/SnippetActionButtons/SnippetActionButtons';
 import LanguageBadge from '@/components/LanguageBadge/LanguageBadge';
 
@@ -26,9 +28,43 @@ export default function SnippetCard({
 	blurContent = false,
 	totalSnippetsInFolder,
 }: SnippetCardProps) {
-	const { theme } = useTheme();
-	const syntaxTheme = theme === 'dark' ? oneDark : oneLight;
-	const blurGradientColor = theme === 'dark' ? 'from-[#282c34]' : 'from-[#fafbfc]';
+	const { theme, resolvedTheme } = useTheme();
+	const [mounted, setMounted] = useState(false);
+	
+	// Ensure component only renders themed content after mount
+	useEffect(() => {
+		setMounted(true);
+	}, []);
+	
+	// Show loading skeleton until mounted and theme is resolved
+	if (!mounted) {
+		return (
+			<Card className='mt-8 p-0 bg-secondary rounded-sm'>
+				<CardHeader className='pt-4'>
+					<div className='flex gap-4 items-center justify-between w-full'>
+						<div className='flex items-center gap-4'>
+							<Skeleton className='h-6 w-32' />
+							<Skeleton className='h-5 w-16 rounded-full' />
+						</div>
+						<div className='flex gap-2'>
+							<Skeleton className='h-8 w-8' />
+							<Skeleton className='h-8 w-8' />
+						</div>
+					</div>
+				</CardHeader>
+				<CardContent className='p-0'>
+					<div className='overflow-hidden rounded-b-sm'>
+						<Skeleton className={`w-full ${showFullContent ? 'h-64' : 'h-[100px]'}`} />
+					</div>
+				</CardContent>
+			</Card>
+		);
+	}
+	
+	// After mounted, use theme with fallback
+	const currentTheme = theme || resolvedTheme || 'dark';
+	const syntaxTheme = currentTheme === 'dark' ? oneDark : oneLight;
+	const blurGradientColor = currentTheme === 'dark' ? 'from-[#282c34]' : 'from-[#fafbfc]';
 
 	return (
 		<Card className='mt-8 p-0 bg-secondary group rounded-sm'>

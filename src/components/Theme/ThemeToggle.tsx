@@ -5,6 +5,7 @@ import { Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
 
 import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -14,6 +15,15 @@ import {
 
 export default function ThemeToggle() {
 	const { setTheme } = useTheme();
+	const [mounted, setMounted] = React.useState(false);
+
+	React.useEffect(() => {
+		setMounted(true);
+	}, []);
+
+	if (!mounted) {
+		return <Skeleton className='h-10 w-10' />;
+	}
 
 	return (
 		<DropdownMenu modal={false}>

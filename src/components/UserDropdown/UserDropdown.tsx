@@ -13,7 +13,14 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 export function UserDropdown({ className }: UserDropdownProps) {
-	const { data: session } = useSession();
+	const { data: session, status } = useSession();
+
+	// Show loading skeleton while session is loading
+	if (status === 'loading') {
+		return (
+			<div className={`h-8 w-8 rounded-full bg-muted/30 animate-pulse ${className}`} />
+		);
+	}
 
 	if (!session?.user) {
 		return null;
