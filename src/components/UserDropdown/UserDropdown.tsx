@@ -17,7 +17,7 @@ export function UserDropdown({ className }: UserDropdownProps) {
 
 	// Show loading skeleton while session is loading
 	if (status === 'loading') {
-		return <div className={`h-8 w-8 rounded-full bg-muted/30 animate-pulse ${className}`} />;
+		return <Avatar className={`animate-pulse bg-muted ${className}`} fallback='' />;
 	}
 
 	if (!session?.user) {

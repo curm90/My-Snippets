@@ -2,6 +2,7 @@
 
 import { signIn, useSession } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
+import { Avatar } from '@/components/ui/avatar';
 import { UserDropdown } from '@/components/UserDropdown/UserDropdown';
 import { LogIn } from 'lucide-react';
 
@@ -9,11 +10,7 @@ export function AuthButton() {
 	const { data: session, status } = useSession();
 
 	if (status === 'loading') {
-		return (
-			<Button variant='ghost' disabled>
-				Loading...
-			</Button>
-		);
+		return <Avatar className='animate-pulse bg-muted' fallback='' />;
 	}
 
 	if (session) {
