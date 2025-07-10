@@ -16,7 +16,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 						<MobileSidebarTrigger />
 						<div className='flex pt-[var(--navbar-height)]'>
 							<AppSidebar />
-							<div className='flex flex-col w-full'>{children}</div>
+							<div className='flex flex-col w-full max-w-[2000px] mx-auto p-8'>{children}</div>
 						</div>
 					</main>
 				</SidebarProvider>

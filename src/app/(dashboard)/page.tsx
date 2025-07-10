@@ -8,8 +8,8 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ q
 	const snippets = await getSnippetsForCurrentUser(searchQuery);
 
 	return (
-		<section className='py-4 px-6'>
-			<div className='mb-4'>
+		<section>
+			<div>
 				<h1 className='text-3xl'>Welcome {user.name || user.email}!</h1>
 				{searchQuery && (
 					<p className='text-muted-foreground mt-2'>

@@ -54,7 +54,7 @@ export function UserDropdown({ className }: UserDropdownProps) {
 				<DropdownMenuSeparator />
 				<DropdownMenuItem
 					onClick={() => signOut()}
-					className='flex items-center gap-2 cursor-pointer text-red-600 focus:text-red-600'
+					className='flex items-center gap-2 cursor-pointer text-destructive hover:bg-destructive/10 focus:bg-destructive/10'
 				>
 					<LogOut className='h-4 w-4' />
 					Sign Out

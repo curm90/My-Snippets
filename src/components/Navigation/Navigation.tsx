@@ -7,10 +7,10 @@ import MobileNavMenu from '@/components/MobileNavMenu/MobileNavMenu';
 
 export default function Navigation() {
 	return (
-		<nav className='fixed top-0 left-0 z-50 flex items-center justify-between py-4 px-8 bg-secondary w-full h-[var(--navbar-height)]'>
-			<div className='flex items-center space-x-6'>
+		<nav className='fixed top-0 left-0 z-50 flex items-center justify-between py-4 md:px-8 px-4 bg-secondary w-full h-[var(--navbar-height)]'>
+			<div className='flex items-center space-x-6 gap-4'>
 				{/* Logo */}
-				<Link href='/'>
+				<Link href='/' className='m-0'>
 					<Image src='/logo.png' alt='code tags' width={30} height={30} className='rounded-full' />
 				</Link>
 

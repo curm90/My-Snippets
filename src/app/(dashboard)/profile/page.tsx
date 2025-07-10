@@ -4,7 +4,7 @@ export default async function ProfilePage() {
 	const user = await getCurrentUser();
 
 	return (
-		<section className='py-4 px-6'>
+		<section>
 			<div className='max-w-2xl mx-auto'>
 				<h1 className='text-3xl font-bold mb-6'>Profile Settings</h1>
 				<div className='bg-card rounded-lg border p-6'>

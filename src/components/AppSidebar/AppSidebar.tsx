@@ -30,7 +30,7 @@ export default function AppSidebar() {
 
 	return (
 		<Sidebar className='h-[calc(100vh-var(--navbar-height))] border-r-4 border-r-secondary'>
-			<SidebarContent className='px-4 py-6'>
+			<SidebarContent className='px-4 py-8'>
 				<SidebarMenu className='flex flex-col'>
 					<SidebarMenuItem>
 						<SidebarMenuButton className='bg-action hover:bg-action/85 text-foreground text-center cursor-pointer mb-8 active:bg-action/80'>
