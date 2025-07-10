@@ -5,9 +5,9 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneDark, oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { useTheme } from 'next-themes';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
 import SnippetActionButtons from '@/components/SnippetActionButtons/SnippetActionButtons';
 import LanguageBadge from '@/components/LanguageBadge/LanguageBadge';
+import SnippetCardSkeleton from './SnippetCardSkeleton';
 
 type SnippetCardProps = {
 	id: string;
@@ -38,27 +38,7 @@ export default function SnippetCard({
 
 	// Show loading skeleton until mounted and theme is resolved
 	if (!mounted) {
-		return (
-			<Card className='mt-8 p-0 bg-secondary rounded-sm'>
-				<CardHeader className='pt-4'>
-					<div className='flex gap-4 items-center justify-between w-full'>
-						<div className='flex items-center gap-4'>
-							<Skeleton className='h-6 w-32' />
-							<Skeleton className='h-5 w-16 rounded-full' />
-						</div>
-						<div className='flex gap-2'>
-							<Skeleton className='h-8 w-8' />
-							<Skeleton className='h-8 w-8' />
-						</div>
-					</div>
-				</CardHeader>
-				<CardContent className='p-0'>
-					<div className='overflow-hidden rounded-b-sm'>
-						<Skeleton className={`w-full ${showFullContent ? 'h-64' : 'h-[100px]'}`} />
-					</div>
-				</CardContent>
-			</Card>
-		);
+		return <SnippetCardSkeleton showFullContent={showFullContent} />;
 	}
 
 	// After mounted, use theme with fallback
