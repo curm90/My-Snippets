@@ -1,5 +1,8 @@
+'use client';
+
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { oneDark, oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { useTheme } from 'next-themes';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import SnippetActionButtons from '@/components/SnippetActionButtons/SnippetActionButtons';
 import LanguageBadge from '@/components/LanguageBadge/LanguageBadge';
@@ -23,8 +26,12 @@ export default function SnippetCard({
 	blurContent = false,
 	totalSnippetsInFolder,
 }: SnippetCardProps) {
+	const { theme } = useTheme();
+	const syntaxTheme = theme === 'dark' ? oneDark : oneLight;
+	const blurGradientColor = theme === 'dark' ? 'from-[#282c34]' : 'from-[#fafbfc]';
+
 	return (
-		<Card className='mt-8 p-0 bg-secondary group'>
+		<Card className='mt-8 p-0 bg-secondary group rounded-sm'>
 			<CardHeader className='pt-4'>
 				<div className='flex gap-4 items-center justify-between w-full'>
 					<div className='flex items-center gap-4'>
@@ -37,7 +44,7 @@ export default function SnippetCard({
 				</div>
 			</CardHeader>
 			<CardContent className='flex flex-col gap-4 p-0 relative'>
-				<div className='overflow-hidden rounded-b-xl relative'>
+				<div className='overflow-hidden rounded-b-sm relative'>
 					<SyntaxHighlighter
 						customStyle={{
 							overflow: 'hidden',
@@ -46,18 +53,20 @@ export default function SnippetCard({
 						}}
 						className={showFullContent ? '' : 'max-h-[100px]'}
 						language={language.toLowerCase()}
-						style={oneDark}
+						style={syntaxTheme}
 						wrapLines={true}
 						showLineNumbers={true}
 					>
 						{content}
 					</SyntaxHighlighter>
 					{blurContent && (
-						<div className='absolute inset-0 bg-gradient-to-t from-[#282c34] from-5% to-transparent pointer-events-none' />
+						<div
+							className={`absolute inset-0 bg-gradient-to-t ${blurGradientColor} from-5% to-transparent pointer-events-none`}
+						/>
 					)}
 				</div>
 				{!showFullContent && (
-					<div className='absolute inset-0 bg-background/70 text-action font-semibold flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100 rounded-b-xl'>
+					<div className='absolute inset-0 bg-background/70 text-action font-semibold flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100 rounded-b-sm'>
 						View Snippet
 					</div>
 				)}
