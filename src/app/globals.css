@@ -39,6 +39,7 @@
 	--color-sidebar-border: var(--sidebar-border);
 	--color-sidebar-ring: var(--sidebar-ring);
 	--color-action: var(--action);
+	--color-action-foreground: var(--action-foreground);
 }
 
 :root {
@@ -75,7 +76,8 @@
 	--sidebar-border: oklch(0.929 0.013 255.508);
 	--sidebar-ring: oklch(0.704 0.04 256.788);
 	--navbar-height: 68px;
-	--action: oklch(0.627 0.265 303.9);
+	--action: oklch(0.456 0.128 270.3);
+	--action-foreground: oklch(0.984 0.003 247.858);
 }
 
 .dark {
@@ -112,6 +114,7 @@
 	--sidebar-ring: oklch(0.551 0.027 264.364);
 	--navbar-height: 68px;
 	--action: oklch(0.627 0.265 303.9);
+	--action-foreground: oklch(0.984 0.003 247.858);
 }
 
 @layer base {

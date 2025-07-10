@@ -24,7 +24,7 @@ export default async function Page({ params }: { params: Promise<{ snippetId: st
 	}
 
 	return (
-		<div className='py-6 px-8'>
+		<div>
 			<div className='flex items-center justify-between'>
 				<h1 className='font-semibold text-xl'>Edit snippet</h1>
 				<h1 className='font-semibold text-xl'>Id: {snippetId}</h1>

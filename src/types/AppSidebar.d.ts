@@ -1,0 +1,3 @@
+type AppSidebarProps = {
+	folders: Folder[];
+};

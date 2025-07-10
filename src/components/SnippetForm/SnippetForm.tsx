@@ -7,7 +7,9 @@ import { useActionState, useEffect } from 'react';
 import { LoaderCircle } from 'lucide-react';
 import CodeMirror from '@uiw/react-codemirror';
 import { nord } from '@uiw/codemirror-theme-nord';
+import { githubLight } from '@uiw/codemirror-theme-github';
 import { loadLanguage, langNames } from '@uiw/codemirror-extensions-langs';
+import { useTheme } from 'next-themes';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
@@ -21,6 +23,7 @@ import { toastMessages } from '@/constants/toastMessages';
 
 export default function SnippetForm({ action, folders, defaultValues, actionId = 'create' }: SnippetFormProps) {
 	const [state, formAction, pending] = useActionState(action, null);
+	const { theme } = useTheme();
 
 	const router = useRouter();
 
@@ -56,7 +59,7 @@ export default function SnippetForm({ action, folders, defaultValues, actionId =
 	return (
 		<Form {...form}>
 			<form action={formAction} className='space-y-8'>
-				<div className='grid grid-cols-2 gap-4'>
+				<div className='grid sm:grid-cols-2 gap-4 grid-cols-1'>
 					<FormField
 						control={form.control}
 						name='title'
@@ -105,13 +108,14 @@ export default function SnippetForm({ action, folders, defaultValues, actionId =
 					render={({ field }) => {
 						const selectedLang = form.getValues('language');
 						const languageExtension = loadLanguage(selectedLang as Parameters<typeof loadLanguage>[0]) || [];
+						const codeTheme = theme === 'dark' ? nord : githubLight;
 
 						return (
 							<FormItem>
 								<FormLabel className='font-semibold'>Snippet</FormLabel>
 								<FormControl>
 									<div className='border border-input bg-transparent rounded-md overflow-hidden py-1 min-h-24'>
-										<CodeMirror extensions={[languageExtension]} theme={nord} {...field} />
+										<CodeMirror extensions={[languageExtension]} theme={codeTheme} {...field} />
 										<textarea
 											name='snippet'
 											value={field.value || ''}
@@ -169,7 +173,7 @@ export default function SnippetForm({ action, folders, defaultValues, actionId =
 					</Button>
 					<Button
 						type='submit'
-						className='bg-action text-foreground hover:bg-action/90 cursor-pointer w-[65px]'
+						className='bg-action text-action-foreground hover:bg-action/90 cursor-pointer w-[65px]'
 						disabled={pending || !form.formState.isValid}
 					>
 						{pending ? <LoaderCircle className='w-6 h-6 animate-spin' /> : 'Save'}

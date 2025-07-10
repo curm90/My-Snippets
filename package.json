@@ -46,6 +46,7 @@
 		"@radix-ui/react-tooltip": "^1.2.7",
 		"@types/bcryptjs": "^3.0.0",
 		"@uiw/codemirror-extensions-langs": "^4.23.13",
+		"@uiw/codemirror-theme-github": "^4.24.0",
 		"@uiw/codemirror-theme-nord": "^4.23.13",
 		"@uiw/react-codemirror": "^4.23.13",
 		"bcryptjs": "^3.0.2",

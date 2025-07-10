@@ -5,6 +5,7 @@ import { Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
 
 import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -14,9 +15,18 @@ import {
 
 export default function ThemeToggle() {
 	const { setTheme } = useTheme();
+	const [mounted, setMounted] = React.useState(false);
+
+	React.useEffect(() => {
+		setMounted(true);
+	}, []);
+
+	if (!mounted) {
+		return <Skeleton className='h-10 w-10' />;
+	}
 
 	return (
-		<DropdownMenu>
+		<DropdownMenu modal={false}>
 			<DropdownMenuTrigger asChild>
 				<Button variant='outline' size='icon' className='cursor-pointer'>
 					<Sun className='h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90' />
@@ -27,7 +37,7 @@ export default function ThemeToggle() {
 			<DropdownMenuContent align='end'>
 				<DropdownMenuItem onClick={() => setTheme('light')}>Light</DropdownMenuItem>
 				<DropdownMenuItem onClick={() => setTheme('dark')}>Dark</DropdownMenuItem>
-				<DropdownMenuItem onClick={() => setTheme('system')}>System</DropdownMenuItem>
+				{/* <DropdownMenuItem onClick={() => setTheme('system')}>System</DropdownMenuItem> */}
 			</DropdownMenuContent>
 		</DropdownMenu>
 	);

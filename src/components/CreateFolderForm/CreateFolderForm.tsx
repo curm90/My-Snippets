@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CircleX, FolderPlus, LoaderCircle } from 'lucide-react';
@@ -16,6 +16,7 @@ import { createFolder } from '@/data-access/folders';
 export default function CreateFolderForm() {
 	const [showForm, setShowForm] = useState(false);
 	const [isSubmitting, setIsSubmitting] = useState(false);
+	const inputRef = useRef<HTMLInputElement>(null);
 
 	const form = useForm<FolderFormValues>({
 		resolver: zodResolver(folderSchema),
@@ -25,6 +26,13 @@ export default function CreateFolderForm() {
 	});
 
 	const toggleForm = () => setShowForm((prev) => !prev);
+
+	// Focus the input when the form becomes visible
+	useEffect(() => {
+		if (showForm && inputRef.current) {
+			inputRef.current.focus();
+		}
+	}, [showForm]);
 
 	const onSubmit = async (data: FolderFormValues) => {
 		setIsSubmitting(true);
@@ -58,7 +66,7 @@ export default function CreateFolderForm() {
 							render={({ field }) => (
 								<FormItem>
 									<FormControl>
-										<Input {...field} placeholder='Enter folder name' />
+										<Input {...field} ref={inputRef} placeholder='Enter folder name' />
 									</FormControl>
 									<FormMessage />
 								</FormItem>

@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect, useCallback, useRef } from 'react';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useDebounce } from 'use-debounce';
 import { Search, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
@@ -97,7 +97,7 @@ export default function SearchBar() {
 	};
 
 	return (
-		<div className='relative max-w-sm w-full'>
+		<div className='relative md:max-w-sm w-full'>
 			<div className='relative'>
 				<Search className='absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4' />
 				<Input

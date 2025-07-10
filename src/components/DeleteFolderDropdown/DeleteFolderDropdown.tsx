@@ -9,6 +9,7 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
 import { deleteFolder } from '@/data-access/folders';
 import { useDeletingFolders } from '@/contexts/DeletingFoldersContext';
 
@@ -30,8 +31,10 @@ export default function DeleteFolderDropdown({ folderId, onRename }: { folderId:
 
 	return (
 		<DropdownMenu>
-			<DropdownMenuTrigger className='hover:bg-accent p-2 rounded-sm hover:text-white transition cursor-pointer'>
-				<Cog size='16' />
+			<DropdownMenuTrigger asChild>
+				<Button variant='ghost' size='icon' className='p-2 cursor-pointer'>
+					<Cog size='16' />
+				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent>
 				<DropdownMenuItem onClick={onRename}>Rename</DropdownMenuItem>

@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import {
 	Sidebar,
@@ -10,18 +12,18 @@ import {
 import FolderList from '@/components/FolderLIst/FolderList';
 import CreateFolderForm from '@/components/CreateFolderForm/CreateFolderForm';
 import { UserDropdown } from '@/components/UserDropdown/UserDropdown';
-import { getFoldersForCurrentUser } from '@/data-access/folders';
+import { useCloseSidebarOnNav } from '@/components/SidebarNavWrapper/SidebarNavWrapper';
 
-export default async function AppSidebar() {
-	const folders = await getFoldersForCurrentUser();
+export default function AppSidebar({ folders }: AppSidebarProps) {
+	const closeSidebarOnNav = useCloseSidebarOnNav();
 
 	return (
 		<Sidebar className='h-[calc(100vh-var(--navbar-height))] border-r-4 border-r-secondary'>
-			<SidebarContent className='px-4 py-6'>
+			<SidebarContent className='px-4 py-8'>
 				<SidebarMenu className='flex flex-col'>
 					<SidebarMenuItem>
-						<SidebarMenuButton className='bg-action hover:bg-action/85 text-foreground text-center cursor-pointer mb-8 active:bg-action/80'>
-							<Link href='/create-snippet' className='text-md font-bold text-center w-full'>
+						<SidebarMenuButton className='bg-action hover:bg-action/85 text-action-foreground hover:text-action-foreground active:text-action-foreground text-center cursor-pointer mb-8 active:bg-action/80'>
+							<Link href='/create-snippet' className='text-md font-bold text-center w-full' onClick={closeSidebarOnNav}>
 								Create Snippet
 							</Link>
 						</SidebarMenuButton>
