@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 import {
 	Sidebar,
 	SidebarContent,
@@ -14,19 +13,9 @@ import FolderList from '@/components/FolderLIst/FolderList';
 import CreateFolderForm from '@/components/CreateFolderForm/CreateFolderForm';
 import { UserDropdown } from '@/components/UserDropdown/UserDropdown';
 import { useCloseSidebarOnNav } from '@/components/SidebarNavWrapper/SidebarNavWrapper';
-import { getFoldersForCurrentUser } from '@/data-access/folders';
 
-export default function AppSidebar() {
-	const [folders, setFolders] = useState<Folder[]>([]);
+export default function AppSidebar({ folders }: AppSidebarProps) {
 	const closeSidebarOnNav = useCloseSidebarOnNav();
-
-	useEffect(() => {
-		async function loadFolders() {
-			const foldersData = await getFoldersForCurrentUser();
-			setFolders(foldersData);
-		}
-		loadFolders();
-	}, []);
 
 	return (
 		<Sidebar className='h-[calc(100vh-var(--navbar-height))] border-r-4 border-r-secondary'>

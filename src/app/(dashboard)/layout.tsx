@@ -5,8 +5,11 @@ import { DeletingFoldersProvider } from '@/contexts/DeletingFoldersContext';
 import Navigation from '@/components/Navigation/Navigation';
 import AppSidebar from '@/components/AppSidebar/AppSidebar';
 import MobileSidebarTrigger from '@/components/MobileSidebarTrigger/MobileSidebarTrigger';
+import { getFoldersForCurrentUser } from '@/data-access/folders';
 
-export default function DashboardLayout({ children }: { children: ReactNode }) {
+export default async function DashboardLayout({ children }: { children: ReactNode }) {
+	const folders = await getFoldersForCurrentUser();
+
 	return (
 		<DeletingSnippetsProvider>
 			<DeletingFoldersProvider>
@@ -15,7 +18,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 						<Navigation />
 						<MobileSidebarTrigger />
 						<div className='flex pt-[var(--navbar-height)]'>
-							<AppSidebar />
+							<AppSidebar folders={folders} />
 							<div className='flex flex-col w-full max-w-[2000px] mx-auto p-8'>{children}</div>
 						</div>
 					</main>
