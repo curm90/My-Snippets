@@ -29,12 +29,7 @@ export default function RootLayout({
 		<html lang='en' suppressHydrationWarning>
 			<body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
 				<AuthProvider>
-					<ThemeProvider 
-						attribute='class' 
-						defaultTheme='dark' 
-						disableTransitionOnChange
-						storageKey='theme'
-					>
+					<ThemeProvider attribute='class' defaultTheme='dark' disableTransitionOnChange storageKey='theme'>
 						{children}
 					</ThemeProvider>
 				</AuthProvider>

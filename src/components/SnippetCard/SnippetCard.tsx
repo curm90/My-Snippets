@@ -30,12 +30,12 @@ export default function SnippetCard({
 }: SnippetCardProps) {
 	const { theme, resolvedTheme } = useTheme();
 	const [mounted, setMounted] = useState(false);
-	
+
 	// Ensure component only renders themed content after mount
 	useEffect(() => {
 		setMounted(true);
 	}, []);
-	
+
 	// Show loading skeleton until mounted and theme is resolved
 	if (!mounted) {
 		return (
@@ -60,7 +60,7 @@ export default function SnippetCard({
 			</Card>
 		);
 	}
-	
+
 	// After mounted, use theme with fallback
 	const currentTheme = theme || resolvedTheme || 'dark';
 	const syntaxTheme = currentTheme === 'dark' ? oneDark : oneLight;
