@@ -13,6 +13,12 @@ export default async function Page({ params }: { params: Promise<{ snippetId: st
 
 	return (
 		<section className='py-4 px-6'>
+			<div className='mb-6'>
+				<h1 className='text-3xl'>{title || `Snippet ${snippetId}`}</h1>
+				<p className='text-muted-foreground mt-2'>
+					Viewing snippet details
+				</p>
+			</div>
 			<SnippetCard id={id} title={title} language={language} content={content} showFullContent />
 		</section>
 	);
