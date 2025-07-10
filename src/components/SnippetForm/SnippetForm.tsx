@@ -169,7 +169,7 @@ export default function SnippetForm({ action, folders, defaultValues, actionId =
 					</Button>
 					<Button
 						type='submit'
-						className='bg-action text-foreground hover:bg-action/90 cursor-pointer w-[65px]'
+						className='bg-action text-action-foreground hover:bg-action/90 cursor-pointer w-[65px]'
 						disabled={pending || !form.formState.isValid}
 					>
 						{pending ? <LoaderCircle className='w-6 h-6 animate-spin' /> : 'Save'}

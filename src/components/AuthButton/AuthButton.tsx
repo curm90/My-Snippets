@@ -21,7 +21,10 @@ export function AuthButton() {
 	}
 
 	return (
-		<Button onClick={() => signIn()} className='bg-action hover:bg-action/85 text-foreground flex items-center gap-2'>
+		<Button
+			onClick={() => signIn()}
+			className='bg-action hover:bg-action/85 hover:text-action-foreground text-action-foreground flex items-center gap-2'
+		>
 			<LogIn className='h-4 w-4' />
 			Sign In
 		</Button>

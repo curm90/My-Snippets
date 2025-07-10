@@ -33,7 +33,7 @@ export default function AppSidebar() {
 			<SidebarContent className='px-4 py-8'>
 				<SidebarMenu className='flex flex-col'>
 					<SidebarMenuItem>
-						<SidebarMenuButton className='bg-action hover:bg-action/85 text-foreground text-center cursor-pointer mb-8 active:bg-action/80'>
+						<SidebarMenuButton className='bg-action hover:bg-action/85 text-action-foreground hover:text-action-foreground text-center cursor-pointer mb-8 active:bg-action/80'>
 							<Link href='/create-snippet' className='text-md font-bold text-center w-full' onClick={closeSidebarOnNav}>
 								Create Snippet
 							</Link>
