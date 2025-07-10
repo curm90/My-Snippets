@@ -9,13 +9,7 @@ export default function NotFound() {
 			<div className='text-center max-w-md mx-auto'>
 				{/* Logo */}
 				<div className='mb-8'>
-					<Image 
-						src='/logo.png' 
-						alt='Code Snippets Logo' 
-						width={80} 
-						height={80} 
-						className='rounded-full mx-auto'
-					/>
+					<Image src='/logo.png' alt='Code Snippets Logo' width={80} height={80} className='rounded-full mx-auto' />
 				</div>
 
 				{/* 404 Text */}
