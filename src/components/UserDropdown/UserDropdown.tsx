@@ -1,6 +1,8 @@
 'use client';
 
+import Link from 'next/link';
 import { signOut, useSession } from 'next-auth/react';
+import { LogOut, Settings } from 'lucide-react';
 import { Avatar } from '@/components/ui/avatar';
 import {
 	DropdownMenu,
@@ -9,12 +11,6 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { LogOut, Settings } from 'lucide-react';
-import Link from 'next/link';
-
-interface UserDropdownProps {
-	className?: string;
-}
 
 export function UserDropdown({ className }: UserDropdownProps) {
 	const { data: session } = useSession();
@@ -27,7 +23,7 @@ export function UserDropdown({ className }: UserDropdownProps) {
 	const displayName = user.name || user.email || 'User';
 
 	return (
-		<DropdownMenu>
+		<DropdownMenu modal={false}>
 			<DropdownMenuTrigger className={className}>
 				<Avatar
 					src={user.image || undefined}
