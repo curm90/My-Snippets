@@ -1,36 +1,188 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# My Snippets
 
-## Getting Started
+A modern, full-stack code snippet management application built with Next.js, TypeScript, and Prisma. Organize, search, and manage your code snippets with an intuitive interface featuring folders, tags, and syntax highlighting.
 
-First, run the development server:
+## ✨ Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+### 📝 Snippet Management
+
+- **Create, Read, Update, Delete** snippets with a clean interface
+- **Syntax highlighting** with CodeMirror integration
+- **Copy to clipboard** functionality with toast notifications
+- **Language selection** with color-coded badges
+- **Tag system** for better organization and categorization
+
+### 📁 Organization
+
+- **Folder system** to organize snippets by project or category
+- **Hierarchical navigation** with sidebar folder tree
+- **Inline folder renaming** with keyboard shortcuts (Enter/Escape)
+- **Smart deletion** - folders can be deleted without affecting contained snippets
+
+### 🔍 Search & Discovery
+
+- **Real-time search** across snippet titles, content, and languages
+- **Search within folders** to find specific snippets quickly
+- **Tag-based filtering** for advanced organization
+
+### 🎨 User Experience
+
+- **Dark/Light theme** support with system preference detection
+- **Responsive design** optimized for desktop and mobile
+- **Loading states** and **optimistic updates** for smooth interactions
+- **Toast notifications** for user feedback on all actions
+- **Smart navigation** that preserves context during operations
+
+### 🔐 Authentication & Security
+
+- **Secure authentication** with NextAuth.js
+- **User isolation** - each user only sees their own snippets
+- **Protected routes** with middleware-based access control
+- **Session management** with secure token handling
+
+### 🗄️ Database & Performance
+
+- **PostgreSQL** database with Prisma ORM
+- **Optimized queries** with proper indexing and relationships
+- **Database migrations** for schema evolution
+- **Seed data** for quick setup and testing
+
+## 🛠️ Tech Stack
+
+- **Frontend**: Next.js 15, React 18, TypeScript
+- **Styling**: Tailwind CSS, Radix UI components
+- **Backend**: Next.js API routes, Prisma ORM
+- **Database**: PostgreSQL
+- **Authentication**: NextAuth.js
+- **Code Editor**: CodeMirror 6
+- **Form Handling**: React Hook Form with Zod validation
+- **Notifications**: Sonner (toast library)
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- PostgreSQL database
+- npm or yarn
+
+### Installation
+
+1. **Clone the repository**
+
+   ```bash
+   git clone <repository-url>
+   cd my-snippets
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   npm install
+   ```
+
+3. **Set up environment variables**
+
+   ```bash
+   cp .env.example .env.local
+   ```
+
+   Configure your database URL and NextAuth secret in `.env.local`
+
+4. **Set up the database**
+
+   ```bash
+   npx prisma migrate dev
+   npx prisma db seed
+   ```
+
+5. **Start the development server**
+
+   ```bash
+   npm run dev
+   ```
+
+6. **Open in browser**
+
+   Navigate to `http://localhost:3000`
+
+## 📁 Project Structure
+
+```text
+src/
+├── app/                    # Next.js app router
+│   ├── (dashboard)/       # Protected dashboard routes
+│   ├── api/               # API routes
+│   └── auth/              # Authentication pages
+├── components/            # Reusable UI components
+├── data-access/          # Database queries and mutations
+├── lib/                  # Utility functions and configurations
+├── types/                # TypeScript type definitions
+└── contexts/             # React context providers
+
+prisma/
+├── schema.prisma         # Database schema
+├── migrations/           # Database migrations
+└── seed.ts              # Seed data script
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🔧 Available Scripts
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
+- `npx prisma studio` - Open Prisma Studio for database management
+- `npx prisma migrate dev` - Run database migrations
+- `npx prisma db seed` - Seed the database with sample data
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🌟 Key Features in Detail
 
-## Learn More
+### Folder Management
 
-To learn more about Next.js, take a look at the following resources:
+- Create folders to organize your snippets
+- Rename folders inline with intuitive UI
+- Delete folders while preserving snippets
+- Navigate folder hierarchy with breadcrumbs
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Advanced Search
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Search across all snippet content, titles, and metadata
+- Real-time results as you type
+- Search within specific folders
+- Clear visual feedback for search results
 
-## Deploy on Vercel
+### Smart UI Interactions
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Optimistic updates for instant feedback
+- Loading states prevent double-clicks and race conditions
+- Context-aware navigation (stay in folder vs. go to home)
+- Keyboard shortcuts for common actions
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Code Editor Features
+
+- Syntax highlighting for 20+ programming languages
+- Dark/light theme integration
+- Responsive code blocks
+- Copy snippet content with one click
+
+## 🚧 Future Enhancements
+
+- [ ] Mobile app responsiveness improvements
+- [ ] Advanced search filters (by language, tags, date)
+- [ ] Snippet sharing capabilities
+- [ ] Export/import functionality
+- [ ] Collaboration features
+- [ ] API for external integrations
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+---
+
+Built with ❤️ using Next.js and modern web technologies.
